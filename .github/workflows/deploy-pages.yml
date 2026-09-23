@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: syllabus-core-pages
   cancel-in-progress: true
 
 jobs:
