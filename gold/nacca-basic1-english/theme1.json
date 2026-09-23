@@ -1,0 +1,182 @@
+{
+  "source": "Basic1_English_Our_World_Our_Words_64pp.pdf, pages 5-11 (accepted edition)",
+  "blueprint": "nacca-basic1-english.v1",
+  "theme": {
+    "number": 1,
+    "title": "Our Natural World",
+    "pages": [5, 11],
+    "units": [
+      {
+        "number": 0, "kind": "project", "title": "Our Natural World Picture Garden", "pages": [5, 5],
+        "blocks": [
+          { "type": "theme_header", "content": { "theme_number": 1, "title": "Our Natural World", "pages": "5–11", "phonics_summary": "Phonics Stage 1, Groups 1–3 (s a t p i n m d g)", "grammar_focus": "nouns", "project_title": "Our Natural World Picture Garden" } },
+          { "type": "hero_illustration", "content": { "brief": "Pupils collect leaves and seeds in the school garden beside a mango tree and stream; teacher kneeling with a basket.", "caption": "Pupils collect leaves and seeds in the school garden, beside the mango tree and the stream.", "alt_text": "Children and their teacher gathering leaves and seeds in a school garden next to a stream." } },
+          { "type": "anansi_says", "content": { "text": "Akwaaba, my friend! Long ago I walked the forest and counted every leaf. Now it is your turn. Build a Picture Garden — one animal and one plant from every unit — and by the end of this theme your garden will be full." } },
+          { "type": "what_you_will_make", "content": { "text": "A folder, a large sheet of card, or a cleared wall space where your class grows a paper garden. Every unit adds two new pictures and two new labels." } },
+          { "type": "project_steps", "content": { "steps": [
+            "**Look** at nature around your home and your school. Walk quietly. Look up at the trees, down at the ground, and across to the water.",
+            "For each unit, **choose** one animal and one plant. Draw it, or cut out a picture, or press a real leaf flat.",
+            "**Paste** it into your garden folder.",
+            "**Write** or copy its name underneath. If you cannot write it yet, say it to a friend and let them write it for you.",
+            "At the end of the theme, **show** your garden to the class and name three things in it."
+          ] } },
+          { "type": "you_will_need", "content": { "items": [
+            "A folder, exercise book or sheet of card for each learner",
+            "Crayons, pencils, or charcoal",
+            "Old newspapers, calendars or seed packets to cut from",
+            "Real leaves, seeds, feathers, small stones and empty snail shells from the school compound",
+            "Paste made from cassava flour and water"
+          ] } },
+          { "type": "do_it_your_way", "content": { "modes": ["Say it", "Sign it", "Point to it", "Place a card", "Draw it", "Write it"], "text": "Work sitting or standing. Work alone, with a partner, or with a helper. Every answer counts." } },
+          { "type": "teacher_note", "content": { "points": [
+            "Run the nature walk in the first week and keep the collected items in a box; learners return to it in Units 1, 2 and 3.",
+            "Take the class outside for ten minutes only. Set one instruction before you leave the classroom: look, do not pick from the farm.",
+            "The project is assessed on page 11, not on drawing skill. A pointed finger and a spoken name earn full credit.",
+            "Learners with low vision can collect by touch and smell — rough bark, smooth stone, crushed neem leaf.",
+            "Keep the garden on display for the whole theme. Learners read each other’s labels; this is authentic reading practice."
+          ] } }
+        ]
+      },
+      {
+        "number": 1, "kind": "unit", "title": "What We See in Nature", "pages": [6, 7], "standard_codes": ["B1.1.1"],
+        "blocks": [
+          { "type": "unit_header", "page": "left", "content": { "theme_number": 1, "unit_number": 1, "title": "What We See in Nature", "competency_label": "Listening and Speaking" } },
+          { "type": "hero_illustration", "page": "left", "content": { "brief": "Morning in the garden: a girl points up at a weaver bird in the mango tree; ants cross a mat; fish swim in the pond.", "caption": "Morning in the garden: a girl points up at a weaver bird in the mango tree. Ants cross a mat and fish swim in the pond.", "alt_text": "A girl pointing at a weaver bird in a mango tree, with ants on a woven mat and fish in a pond." } },
+          { "type": "oral_text", "page": "left", "content": { "form": "song", "lines": [
+            "I see a tree, green and tall!", "I see a bird, flying small!", "I see an ant, on the mat!", "God made nature for us all!",
+            "I see a fish, in the stream!", "I see the sun, gold and gleam!", "I see a leaf, fall and spin!", "Nature’s world, let us begin!"
+          ], "performance_instruction": "Sing to the tune of Sansa Kroma, or clap the beat with two sticks. Sing it once as a class, then let one row sing “I see a…” and the other row answer with the naming word." } },
+          { "type": "talk_about_it", "page": "left", "content": { "questions": [
+            "What can you see in the picture? Point and say it.",
+            "What do you see on your way to school? A goat? A lorry? A mango tree?",
+            "Which one is your favourite? Tell your partner: I see a …"
+          ] } },
+          { "type": "vocabulary_strip", "page": "left", "content": { "words": ["nature", "animal", "plant", "tree", "bird", "fish"], "instruction": "Say each word three times. Clap once for each word. Then find that thing in the picture and point to it." } },
+          { "type": "language_bridge", "page": "left", "content": { "languages": ["Twi", "Ewe", "Ga", "Dagbani"], "rows": [
+            { "English": "tree",  "Twi": "dua",     "Ewe": "atí",    "Ga": "tso",     "Dagbani": "tia" },
+            { "English": "bird",  "Twi": "anomaa",  "Ewe": "xevi",   "Ga": "loofɔlɔ", "Dagbani": "noombihi" },
+            { "English": "fish",  "Twi": "nam",     "Ewe": "tɔmelã", "Ga": "loo",     "Dagbani": "zahim" },
+            { "English": "water", "Twi": "nsuo",    "Ewe": "tsi",    "Ga": "nu",      "Dagbani": "kom" }
+          ], "instruction": "Say the word in the language you speak at home, then say it in English. Teachers: replace this row with the dominant language of your community. Accept the home-language word first, then model the English word." } },
+          { "type": "teacher_note", "page": "left", "content": { "points": [
+            "CONTENT STANDARD: B1.1.1 — listen to and respond to simple songs and texts about the immediate environment.",
+            "Teach the song by echo, line by line. Do not show the print until the class can sing two lines from memory.",
+            "Non-speaking learners sing by tapping the beat or holding up the matching picture card on each naming word.",
+            "Watch for the common error “I see tree.” Model the article: a tree, a bird, an ant."
+          ] } },
+          { "type": "phonics", "page": "right", "content": { "stage": 1, "group": 1, "sounds": [
+            { "grapheme": "s", "phoneme": "/s/", "examples": ["sun", "snake", "sand"] },
+            { "grapheme": "a", "phoneme": "/a/", "examples": ["ant", "apple", "akara"] },
+            { "grapheme": "t", "phoneme": "/t/", "examples": ["top", "tin", "table"] }
+          ], "blend_items": ["a – t → at", "s – a – t → sat", "a – s → as"], "activity": "Find the sound: Which of these begins with /s/? sun • ant • sand • tin • snail" } },
+          { "type": "reading", "page": "right", "content": { "type": "picture_supported_text", "sentences": ["This is a tree.", "I see a bird.", "I see an ant.", "A bird sat."], "sight_words": ["this", "is", "I", "see", "an", "a"], "decodable_words": ["sat"] } },
+          { "type": "grammar", "page": "right", "content": { "focus": "Nouns — naming words", "explanation": "A naming word tells us the name of a person, an animal, a place or a thing.", "examples": { "People": ["Esi", "Kwabena", "teacher", "mother"], "Animals": ["bird", "ant", "fish", "goat"], "Places": ["school", "farm", "river", "Kumasi"], "Things": ["mat", "tin", "ball", "mango"] }, "your_turn": ["Circle the naming words: tree big bird run fish ant", "Look at the picture on page 6. Name four things you can see.", "Say a sentence: This is a ______."] } },
+          { "type": "writing", "page": "right", "content": { "tasks": ["Trace the pattern lines: straight down like rain | across like a path | curved like a river bend.", "Trace the letters, three times each: s a t. Start each letter at the dot.", "Copy the word sat.", "Draw one thing you saw outside today. Write or copy its name under your drawing."] } },
+          { "type": "anansi_says", "page": "right", "content": { "text": "I spin my web with one thread at a time. You will read with one sound at a time. s… a… t… — did you hear it? sat!" } },
+          { "type": "teacher_note", "page": "right", "content": { "points": [
+            "Pure sounds only. Say /s/ and /t/, never “suh” and “tuh” — added vowels make blending harder later.",
+            "Learners who cannot hold a pencil form letters in sand trays, in the air, or with a partner guiding the hand.",
+            "Accept letter formation that is roughly correct in shape and direction. Speed comes later in the year.",
+            "Keep a “sound wall” growing on the classroom wall all year. Three new letters go up this week.",
+            "Learners who already blend confidently: ask them to build sat and at with letter cards, then hunt for /s/ in their own names."
+          ] } }
+        ]
+      },
+      {
+        "number": 2, "kind": "unit", "title": "Animals Around Us", "pages": [8, 9],
+        "blocks": [
+          { "type": "unit_header", "page": "left", "content": { "theme_number": 1, "unit_number": 2, "title": "Animals Around Us", "competency_label": "Listening and Speaking" } },
+          { "type": "hero_illustration", "page": "left", "content": { "brief": "Near homes: a dog, a goat, a hen with chicks and a cow. At the forest edge: a lion resting and a green snake on a branch.", "caption": "Near our homes: a dog, a goat, a hen with chicks and a cow. Far away at the forest edge: a lion resting and a green snake on a branch.", "alt_text": "Farm animals near a home, and a lion and a snake at the edge of a forest." } },
+          { "type": "oral_text", "page": "left", "content": { "form": "rhyme", "lines": [
+            "The dog says bark, the hen says cluck!", "The cow eats grass, the snake finds luck!", "Lion in the forest, goat on the hill,", "We know our animals, yes we will!"
+          ], "performance_instruction": "Stamp on the animal names. Act each sound: bark, cluck, moo, hiss. Play it as ampe: clap, jump, and call the next animal." } },
+          { "type": "talk_about_it", "page": "left", "content": { "questions": [
+            "Anansi’s question: In our old stories, Anansi meets many animals in the forest. Which animal do you meet on the way to school? Tell the class what it does.",
+            "Sort them: Which animals live near our homes? Which live in the forest? Point to each one and say where it lives."
+          ] } },
+          { "type": "vocabulary_strip", "page": "left", "content": { "words": ["dog", "goat", "hen", "cow", "lion", "snake"], "instruction": "Say each word. Point to the animal in the picture." } },
+          { "type": "language_bridge", "page": "left", "content": { "languages": ["Twi", "Ewe", "Ga", "Dagbani"], "rows": [
+            { "English": "dog",  "Twi": "ɔkraman",   "Ewe": "avu",    "Ga": "gbee",   "Dagbani": "baa" },
+            { "English": "goat", "Twi": "abirekyie", "Ewe": "gbɔ̃",    "Ga": "abotia", "Dagbani": "bua" },
+            { "English": "hen",  "Twi": "akokɔ",     "Ewe": "koklo",  "Ga": "wuo",    "Dagbani": "noo" }
+          ], "instruction": "Say the word in the language you speak at home, then say it in English." } },
+          { "type": "teacher_note", "page": "left", "content": { "points": [
+            "Animal sounds differ across languages. Ask learners what a dog “says” in their home language, then compare with English. This is a language-awareness moment, not an error to correct.",
+            "If any learner is frightened of dogs or snakes, handle the pictures calmly and briefly; do not dwell.",
+            "Use real experience first — the school’s goats and fowls beat any picture card."
+          ] } },
+          { "type": "phonics", "page": "right", "content": { "stage": 1, "group": 2, "sounds": [
+            { "grapheme": "p", "phoneme": "/p/", "examples": ["pig", "pot", "palm"] },
+            { "grapheme": "i", "phoneme": "/i/", "examples": ["in", "ink", "insect"] },
+            { "grapheme": "n", "phoneme": "/n/", "examples": ["nest", "net", "nose"] }
+          ], "blend_items": ["pin", "nip", "sit", "pat", "tap", "pan", "tin", "nap"], "activity": "Listen and choose: I say pan. Which word did I say — pan or pin? Now: tap or tip? sit or sat?" } },
+          { "type": "reading", "page": "right", "content": { "type": "match_and_read", "sentences": ["This is a hen.", "A pig sat in the pan.", "I pat a goat."], "match_words": ["dog", "hen", "cow", "goat"], "sight_words": ["this", "is", "a", "I", "the"], "decodable_words": ["sat", "in", "pan", "pat"] } },
+          { "type": "grammar", "page": "right", "content": { "focus": "Nouns in spoken sentences", "explanation": "Use a naming word in a sentence. Say it aloud to your partner.", "examples": { "Sentences": ["This is a goat.", "This is a hen.", "I see a cow."] }, "your_turn": ["Partner game: One of you points at a picture. The other says the sentence. Then swap. Play five times."] } },
+          { "type": "writing", "page": "right", "content": { "tasks": ["Trace and copy: dog hen cow", "Trace the letters p i n, three times each.", "Draw your favourite animal. Write its name, or copy it from the vocabulary strip.", "Add your animal drawing to the Picture Garden folder."] } },
+          { "type": "do_it_your_way", "page": "right", "content": { "modes": ["Say it", "Sign it", "Point to it", "Place a card", "Draw it", "Write it"], "text": "Sitting or standing. Alone or with a helper." } },
+          { "type": "teacher_note", "page": "right", "content": { "points": [
+            "Minimal pairs (pan/pin, sat/sit) build vowel discrimination. Two minutes daily is enough.",
+            "Many Ghanaian learners hear /p/ and /f/ as close. Show the lips: /p/ pops, /f/ blows.",
+            "Before Unit 3, check every learner can blend at least one CVC word aloud or by placing letter cards in order. Note the names of those who cannot; give them five extra minutes on Groups 1–2 during Unit 3."
+          ] } }
+        ]
+      },
+      {
+        "number": 3, "kind": "unit", "title": "Plants and Forest Life", "pages": [10, 10],
+        "blocks": [
+          { "type": "unit_header", "content": { "theme_number": 1, "unit_number": 3, "title": "Plants and Forest Life", "competency_label": "Full unit on one page" } },
+          { "type": "hero_illustration", "content": { "brief": "A plant with a flower, leaves, a stem and roots; a seed on the soil beside it; tall forest trees behind.", "caption": "A plant with a flower, leaves, a stem and roots. A seed rests on the soil beside it. Tall forest trees stand behind.", "alt_text": "Labelled diagram of a plant showing flower, leaf, stem, root and seed, with forest trees behind.", "labels": ["flower", "leaf", "stem", "root", "seed"] } },
+          { "type": "oral_text", "content": { "form": "conversation", "lines": [
+            "Esi: I like green trees. I do not like weeds.", "Kojo: Why do you like trees?", "Esi: Trees give us shade. Trees give us mangoes.", "Kojo: I like the shade. The sun is hot!"
+          ], "performance_instruction": "Practise in pairs. Change the plant each time: I like tall palms. I like sweet cocoa. I like plantain." } },
+          { "type": "talk_about_it", "content": { "questions": [
+            "Which plants grow near your home? Cassava? Plantain? Neem? Okro?",
+            "Which plant do we eat? Which plant gives us shade? Which plant gives us medicine?",
+            "Have you seen a big forest, like Kakum or Atewa? What did you hear there?"
+          ] } },
+          { "type": "vocabulary_strip", "content": { "words": ["leaf", "root", "seed", "flower", "forest", "shade"], "instruction": "Say each word and point to it in the picture." } },
+          { "type": "phonics", "content": { "stage": 1, "group": 3, "sounds": [
+            { "grapheme": "m", "phoneme": "/m/", "examples": ["mat", "mango", "moon"] },
+            { "grapheme": "d", "phoneme": "/d/", "examples": ["dig", "duck", "drum"] },
+            { "grapheme": "g", "phoneme": "/g/", "examples": ["goat", "garden", "gari"] }
+          ], "blend_items": ["mat", "dim", "dig", "sad", "map", "man", "gas", "pig"], "activity": "Nine sounds now: s a t p i n m d g. Read these three together: a man sat." } },
+          { "type": "grammar", "content": { "focus": "Nouns — sorting", "explanation": "Put each naming word in the right basket.", "examples": { "Animal": ["goat", "hen", "fish"], "Plant": ["leaf", "seed", "mango tree"], "Place": ["farm", "forest", "school"], "Thing": ["mat", "pot", "drum"] }, "your_turn": ["Now sort these yourself: root river cow tin flower market"] } },
+          { "type": "writing", "content": { "tasks": ["Label the plant in the picture: leaf, root, seed.", "Trace the letters m d g, three times each.", "Copy: I see a leaf.", "Press one real leaf into your Picture Garden folder and write its name."] } },
+          { "type": "anansi_says", "content": { "text": "A small seed becomes a tall tree. A small sound becomes a whole word. Keep going, my friend — you are growing." } },
+          { "type": "teacher_note", "content": { "points": [
+            "Bring in a real seedling in a tin, or germinate beans on wet cotton three days before this lesson, so learners can see the root.",
+            "The word gari is used as a picture word for /g/ only; it is not a decodable word at this stage.",
+            "Learners who cannot go outside can work from the collection box; keep leaves flat between the pages of a heavy book.",
+            "Close the unit by reviewing all nine letters on the sound wall before the assessment on page 11."
+          ] } }
+        ]
+      },
+      {
+        "number": 99, "kind": "assessment", "title": "Theme 1 Assessment", "pages": [11, 11],
+        "blocks": [
+          { "type": "assessment_intro", "content": { "text": "Four short tasks. Take them one at a time, across two lessons if you need to. Any response mode is accepted." } },
+          { "type": "assessment_tasks", "content": { "tasks": [
+            { "area": "oral_or_sign", "title": "Oral or sign", "prompt": "Look at the pictures on pages 6, 8 and 10. Name three animals and two plants. You may say them, sign them, point to them, or place the picture cards." },
+            { "area": "phonics", "title": "Phonics", "prompt": "Point to each letter and say its sound: s a t p i n m d g. Blend and read: sat. Extra: read pin, mat, dig." },
+            { "area": "grammar", "title": "Grammar", "prompt": "Circle the naming words: bird run tree big fish sit goat green" },
+            { "area": "writing", "title": "Writing", "prompt": "Copy this sentence in your best handwriting: The bird is in the tree. Then show your Picture Garden and name one thing you put in it." }
+          ] } },
+          { "type": "rubric", "content": { "levels": ["Beginning", "Approaching", "Meeting", "Exceeding"], "rows": [
+            { "skill": "Oral naming",   "Beginning": "Names or points to one item with support", "Approaching": "Names two or three items", "Meeting": "Names three animals and two plants", "Exceeding": "Names all five and adds a describing word or a full sentence" },
+            { "skill": "Letter sounds", "Beginning": "Recalls fewer than four sounds", "Approaching": "Recalls four to six sounds", "Meeting": "Recalls all nine sounds", "Exceeding": "Recalls all nine and identifies the first sound in new words" },
+            { "skill": "Blending",      "Beginning": "Says the sounds but does not blend", "Approaching": "Blends with the teacher modelling first", "Meeting": "Blends sat independently", "Exceeding": "Blends three or more CVC words independently" },
+            { "skill": "Nouns",         "Beginning": "Identifies one naming word", "Approaching": "Identifies two or three", "Meeting": "Identifies all four naming words", "Exceeding": "Identifies all four and sorts them by category" },
+            { "skill": "Writing",       "Beginning": "Traces letter shapes", "Approaching": "Copies some words with gaps or reversals", "Meeting": "Copies the sentence legibly", "Exceeding": "Copies accurately with spacing and a full stop" },
+            { "skill": "Project",       "Beginning": "Contributes one picture", "Approaching": "Contributes pictures for two units", "Meeting": "Complete garden, names one item", "Exceeding": "Complete garden with labels, presents to the class" }
+          ] } },
+          { "type": "teacher_note", "content": { "points": [
+            "Assess orally, one learner at a time, while the rest continue the Picture Garden. Two to three minutes each is enough.",
+            "A response by sign, pointing or card placement scores exactly the same as a spoken one. Record the mode used, not a deduction.",
+            "Learners at Beginning on blending carry Groups 1–3 forward into Theme 2 alongside Group 4. Do not move them on and hope.",
+            "Record on the class profile sheet, then carry the names of the learners who need more phonics time into your Theme 2 planning."
+          ] } }
+        ]
+      }
+    ]
+  }
+}

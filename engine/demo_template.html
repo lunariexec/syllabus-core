@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Syllabus Core Demo</title>
+<style>
+:root {
+  --bg: #f7f6f2; --surface: #ffffff; --surface-2: #f0eee8; --text: #1d1d1b; --muted: #5f5d57;
+  --border: #dedbd2; --accent: #4E8A3A; --ok: #2f7d4a; --warn: #b3541e; --note: #fff7e0; --note-border: #e8cf85;
+  --shadow: 0 1px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161614; --surface: #201f1c; --surface-2: #2a2925; --text: #eceae4; --muted: #a8a59c;
+    --border: #3a3833; --ok: #6cc28a; --warn: #f0925a; --note: #2e2a1c; --note-border: #6b5a26; --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161614; --surface: #201f1c; --surface-2: #2a2925; --text: #eceae4; --muted: #a8a59c;
+  --border: #3a3833; --ok: #6cc28a; --warn: #f0925a; --note: #2e2a1c; --note-border: #6b5a26; --shadow: none;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1180px; margin: 0 auto; padding: 32px 16px 64px; }
+h1 { font-size: 28px; line-height: 1.2; margin: 4px 0 8px; }
+h2 { font-size: 20px; margin: 40px 0 12px; }
+h3 { font-size: 16px; margin: 0 0 6px; }
+.eyebrow { color: var(--accent); font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+.lede { color: var(--muted); max-width: 720px; margin: 0; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 24px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); }
+.tile .k { color: var(--muted); font-size: 13px; }
+.tile .v { font-size: 24px; font-weight: 650; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.tile .s { color: var(--muted); font-size: 13px; }
+.flow { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--border); margin-left: 8px; }
+.flow li { position: relative; padding: 0 0 14px 20px; transition: opacity .3s; }
+.flow li.hidden { opacity: 0; }
+.flow li::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 2px solid var(--muted); }
+.flow li.ok::before { border-color: var(--ok); background: var(--ok); }
+.flow li.bad::before { border-color: var(--warn); background: var(--surface); }
+.flow .line { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.flow .what { font-weight: 600; }
+.flow .res.ok { color: var(--ok); } .flow .res.bad { color: var(--warn); }
+.flow .meta { color: var(--muted); font-size: 13px; }
+.flow details { margin-top: 4px; font-size: 14px; }
+.flow details ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); }
+button { font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); padding: 6px 14px; }
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.compare.single { grid-template-columns: 1fr; }
+@media (max-width: 800px) { .compare { grid-template-columns: 1fr; } }
+.col { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: var(--shadow); min-width: 0; }
+.col > .head { border-bottom: 3px solid var(--accent); padding-bottom: 10px; margin-bottom: 12px; }
+.col > .head .who { font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.col > .head .title { font-size: 19px; font-weight: 650; }
+.col > .head .pp { color: var(--muted); font-size: 13px; }
+.col .flag { font-size: 13px; color: var(--warn); margin-top: 4px; }
+.pagelabel { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin: 14px 0 6px; }
+.block { margin: 0 0 14px; }
+.block .bt { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+.block p { margin: 0 0 6px; }
+.block ul, .block ol { margin: 0; padding-left: 20px; }
+.verse { font-style: italic; margin: 0 0 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+.chip { background: var(--surface-2); border-radius: 999px; padding: 2px 10px; font-size: 14px; }
+.illus { border: 1.5px dashed var(--border); border-radius: 8px; padding: 10px 12px; background: var(--surface-2); font-size: 14px; }
+.illus .brief { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.bubble { position: relative; background: var(--surface-2); border-radius: 14px; padding: 10px 14px; margin-left: 34px; }
+.bubble svg { position: absolute; left: -34px; top: 4px; }
+.note { background: var(--note); border: 1px solid var(--note-border); border-radius: 8px; padding: 8px 12px; font-size: 14px; }
+.sounds { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.sound { border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; min-width: 88px; }
+.sound .g { font-size: 26px; font-weight: 700; line-height: 1; color: var(--accent); }
+.sound .ex { font-size: 13px; color: var(--muted); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; font-size: 14px; width: 100%; }
+th, td { border: 1px solid var(--border); padding: 4px 8px; text-align: left; vertical-align: top; }
+th { background: var(--surface-2); font-weight: 600; }
+.human { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 20px; }
+.human li { margin: 10px 0; }
+pre { white-space: pre-wrap; font-size: 12px; background: var(--surface-2); padding: 8px; border-radius: 6px; }
+footer { color: var(--muted); font-size: 13px; margin-top: 40px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow" id="eyebrow"></div>
+  <h1 id="title"></h1>
+  <p class="lede" id="lede"></p>
+  <div class="tiles" id="tiles"></div>
+
+  <h2>How the draft was made</h2>
+  <div class="row"><button class="primary" id="replay">Replay the run</button><span class="meta" id="flowmeta" style="color:var(--muted);font-size:14px"></span></div>
+  <ol class="flow" id="flow"></ol>
+
+  <h2 id="comparehead">AI draft beside the approved book</h2>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="compare" id="compare"></div>
+
+  <h2>What still needs a person</h2>
+  <ul class="human" id="human"></ul>
+
+  <footer id="footer"></footer>
+</main>
+
+<script id="run-data" type="application/json">__RUN_DATA__</script>
+<script>
+const run = JSON.parse(document.getElementById('run-data').textContent);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rich = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+const list = (items, tag = 'ul') => `<${tag}>${(items || []).map(i => `<li>${rich(i)}</li>`).join('')}</${tag}>`;
+const chips = items => `<div class="chips">${(items || []).map(w => `<span class="chip">${esc(w)}</span>`).join('')}</div>`;
+const table = (cols, rows) => `<div class="tablewrap"><table><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${
+  (rows || []).map(r => `<tr>${cols.map(c => `<td>${esc(r[c])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+
+if (run.theme_colour) document.documentElement.style.setProperty('--accent', run.theme_colour);
+
+const gen = run.generated, gold = run.gold;
+$('eyebrow').textContent = `${run.blueprint_title} · Syllabus Core engine`;
+$('title').textContent = `Theme ${gen.number}: ${gen.title}`;
+$('lede').textContent = `The engine wrote this theme from the book blueprint and the curriculum standard. `
+  + `Every unit went through the automatic quality checker, and any problems went back to the AI to fix before the next unit was written.`
+  + (gold ? ` Below, the AI draft sits next to the approved Theme 1 from the published book.` : '');
+
+// Tiles
+const sg = run.score.generated, sgold = run.score.gold;
+const repairs = run.events.filter(e => e.action === 'repair').length;
+const mins = Math.floor(run.seconds / 60), secs = Math.round(run.seconds % 60);
+const tiles = [
+  ['Checker score, AI draft', `${sg.passes}/${sg.total}`, `${(100 * sg.passes / sg.total).toFixed(1)}% of checks passed`],
+  sgold && ['Checker score, approved book', `${sgold.passes}/${sgold.total}`, `${(100 * sgold.passes / sgold.total).toFixed(1)}%, same checker`],
+  ['Repair rounds', repairs, repairs === 1 ? 'one unit was sent back' : `across ${new Set(run.events.filter(e => e.action === 'repair').map(e => e.slot)).size} unit(s)`],
+  ['Time to draft', `${mins}:${String(secs).padStart(2, '0')}`, 'minutes, whole theme'],
+  run.cost_usd != null && ['API cost', `$${run.cost_usd.toFixed(2)}`, `${run.usage.output_tokens.toLocaleString()} tokens written`],
+].filter(Boolean);
+$('tiles').innerHTML = tiles.map(([k, v, s]) => `<div class="tile"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div><div class="s">${esc(s)}</div></div>`).join('');
+
+// Pipeline
+const steps = [{ what: 'Read the blueprint', res: run.blueprint, ok: true, meta: `${run.standards.length} curriculum standard(s) as input` }];
+for (const e of run.events) {
+  steps.push({
+    what: `${e.slot}: ${e.action === 'generate' ? 'AI writes the draft' : `AI fixes the problems (round ${e.attempt - 1})`}`,
+    res: e.problems.length ? `checker found ${e.problems.length} problem${e.problems.length > 1 ? 's' : ''}` : 'checker: passed',
+    ok: !e.problems.length, meta: `${e.seconds}s`, problems: e.problems,
+  });
+}
+steps.push({ what: 'Final check of the whole theme', res: `${sg.passes}/${sg.total} passed`, ok: !sg.problems.length, problems: sg.problems });
+$('flow').innerHTML = steps.map(s => `<li class="${s.ok ? 'ok' : 'bad'}"><div class="line"><span class="what">${esc(s.what)}</span>`
+  + `<span class="res ${s.ok ? 'ok' : 'bad'}">${esc(s.res)}</span>${s.meta ? `<span class="meta">${esc(s.meta)}</span>` : ''}</div>`
+  + (s.problems && s.problems.length ? `<details><summary>What the checker found</summary>${list(s.problems)}</details>` : '') + '</li>').join('');
+$('flowmeta').textContent = `${run.events.length} AI calls · ${run.model} · effort ${run.effort}`;
+let timer;
+$('replay').onclick = () => {
+  clearInterval(timer);
+  const items = [...$('flow').children];
+  items.forEach(li => li.classList.add('hidden'));
+  let i = 0;
+  timer = setInterval(() => { if (i < items.length) items[i++].classList.remove('hidden'); else clearInterval(timer); }, 650);
+};
+
+// Block rendering
+const spider = `<svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round">
+<path d="M9 11 L3 6 M9 13 L2 13 M9 15 L3 20 M17 11 L23 6 M17 13 L24 13 M17 15 L23 20"/></g><circle cx="13" cy="13" r="5" fill="currentColor"/><circle cx="13" cy="7.5" r="2.6" fill="currentColor"/></svg>`;
+const render = {
+  theme_header: c => `<p><strong>Theme ${esc(c.theme_number)}: ${esc(c.title)}</strong> · pages ${esc(c.pages)}</p><p>${esc(c.phonics_summary)} · Grammar: ${esc(c.grammar_focus)}</p><p>Project: <strong>${esc(c.project_title)}</strong></p>`,
+  unit_header: c => `<p><strong>Unit ${esc(c.unit_number)}: ${esc(c.title)}</strong> · ${esc(c.competency_label)}</p>`,
+  hero_illustration: c => `<div class="illus">Picture: ${esc(c.caption)}<div class="brief">Illustrator brief: ${esc(c.brief)}</div><div class="brief">Alt text: ${esc(c.alt_text)}</div>${c.labels ? chips(c.labels) : ''}</div>`,
+  oral_text: c => `<p><strong>${esc(c.form)}</strong></p>${(c.lines || []).map(l => `<div class="verse">${esc(l)}</div>`).join('')}<p style="font-size:14px;color:var(--muted)">${esc(c.performance_instruction)}</p>`,
+  talk_about_it: c => list(c.questions),
+  vocabulary_strip: c => chips(c.words) + `<p style="font-size:14px;color:var(--muted)">${esc(c.instruction)}</p>`,
+  language_bridge: c => table(['English', ...(c.languages || [])], c.rows) + `<p style="font-size:14px;color:var(--muted)">${esc(c.instruction)}</p>`,
+  phonics: c => `<div class="sounds">${(c.sounds || []).map(s => `<div class="sound"><div class="g">${esc(s.grapheme)}</div><div>${esc(s.phoneme)}</div><div class="ex">${esc((s.examples || []).join(', '))}</div></div>`).join('')}</div>`
+    + `<p>Blend: ${esc((c.blend_items || []).join(' · '))}</p><p>${esc(c.activity)}</p>`,
+  reading: c => list(c.sentences) + `<p style="font-size:14px;color:var(--muted)">Sight words:</p>${chips(c.sight_words)}`,
+  grammar: c => `<p><strong>${esc(c.focus)}</strong></p><p>${esc(c.explanation)}</p>`
+    + Object.entries(c.examples || {}).map(([k, v]) => `<p><em>${esc(k)}:</em> ${esc(Array.isArray(v) ? v.join(', ') : v)}</p>`).join('')
+    + `<p><strong>Your turn</strong></p>${list(c.your_turn)}`,
+  writing: c => list(c.tasks),
+  anansi_says: c => `<div class="bubble">${spider}${esc(c.text)}</div>`,
+  what_you_will_make: c => `<p>${rich(c.text)}</p>`,
+  project_steps: c => list(c.steps, 'ol'),
+  you_will_need: c => list(c.items),
+  do_it_your_way: c => chips(c.modes) + `<p>${esc(c.text)}</p>`,
+  teacher_note: c => `<div class="note"><strong>Teacher note</strong>${list(c.points)}</div>`,
+  assessment_intro: c => `<p>${esc(c.text)}</p>`,
+  assessment_tasks: c => `<ol>${(c.tasks || []).map(t => `<li><strong>${esc(t.title)}</strong>: ${esc(t.prompt)}</li>`).join('')}</ol>`,
+  rubric: c => table(['skill', ...(c.levels || [])], c.rows),
+};
+const labels = { hero_illustration: 'Illustration', oral_text: 'Listening and speaking', talk_about_it: 'Talk about it', vocabulary_strip: 'Vocabulary',
+  language_bridge: 'Language bridge', anansi_says: 'Anansi', what_you_will_make: 'What you will make', project_steps: 'Steps',
+  you_will_need: 'You will need', do_it_your_way: 'Do it your way', assessment_intro: 'Assessment', assessment_tasks: 'Tasks' };
+const blockHTML = b => {
+  if (b.type === 'teacher_note') return `<div class="block">${render.teacher_note(b.content || {})}</div>`;
+  const fn = render[b.type];
+  const label = labels[b.type] ?? b.type.replace(/_/g, ' ');
+  let body;
+  try { body = fn ? fn(b.content || {}) : `<pre>${esc(JSON.stringify(b.content, null, 1))}</pre>`; }
+  catch { body = `<pre>${esc(JSON.stringify(b.content, null, 1))}</pre>`; }
+  return `<div class="block">${['theme_header', 'unit_header'].includes(b.type) ? '' : `<div class="bt">${esc(label)}</div>`}${body}</div>`;
+};
+const problemsFor = (score, unit) => (score?.problems || []).filter(p => p.startsWith(`Unit ${unit.number} (`) || (unit.kind === 'assessment' && p.startsWith('Assessment should')));
+const unitHTML = (unit, who, score) => {
+  if (!unit) return `<div class="col"><div class="head"><div class="who">${esc(who)}</div></div><p>Not available.</p></div>`;
+  const pp = unit.pages[0] === unit.pages[1] ? `page ${unit.pages[0]}` : `pages ${unit.pages[0]}–${unit.pages[1]}`;
+  const flags = problemsFor(score, unit);
+  let html = '', lastPage = null;
+  for (const b of unit.blocks || []) {
+    if (b.page && b.page !== lastPage) { html += `<div class="pagelabel">${b.page === 'left' ? 'Left page' : 'Right page'}</div>`; lastPage = b.page; }
+    html += blockHTML(b);
+  }
+  return `<div class="col"><div class="head"><div class="who">${esc(who)}</div><div class="title">${esc(unit.title)}</div><div class="pp">${pp}</div>`
+    + flags.map(f => `<div class="flag">Checker: ${esc(f.replace(/^Unit \d+ \([^)]*\): /, ''))}</div>`).join('') + `</div>${html}</div>`;
+};
+const slotName = u => u.kind === 'project' ? 'Project' : u.kind === 'assessment' ? 'Assessment' : `Unit ${u.number}`;
+if (!gold) { $('comparehead').textContent = 'The AI draft'; $('compare').classList.add('single'); }
+$('tabs').innerHTML = gen.units.map((u, i) => `<button role="tab" aria-selected="${i === 0}" data-i="${i}">${esc(slotName(u))}</button>`).join('');
+const show = i => {
+  [...$('tabs').children].forEach(b => b.setAttribute('aria-selected', b.dataset.i == i));
+  const u = gen.units[i];
+  const g = gold && gold.units.find(x => x.kind === u.kind && x.number === u.number);
+  $('compare').innerHTML = unitHTML(u, 'AI draft', run.score.generated) + (gold ? unitHTML(g, 'Approved book', run.score.gold) : '');
+};
+$('tabs').onclick = e => { if (e.target.dataset.i) show(+e.target.dataset.i); };
+show(0);
+
+// What still needs a person
+const human = [
+  'The curriculum lead reads and approves every unit. The checker catches rule breaks; it cannot judge whether a page is good teaching.',
+  'A native speaker checks every Twi, Ewe, Ga and Dagbani word in the language bridge tables before print.',
+  'An illustrator draws each picture from the brief, and a designer lays out the pages.',
+];
+if (sg.problems.length) human.unshift(`${sg.problems.length} checker problem${sg.problems.length > 1 ? 's' : ''} remained after the repair rounds; a reviewer fixes these by hand.`);
+$('human').innerHTML = human.map(h => `<li>${esc(h)}</li>`).join('');
+$('footer').textContent = `${run.engine} · ${run.model} · generated ${new Date(run.created).toLocaleString('en-GB')} · blueprint ${run.blueprint}`;
+</script>
+</body>
+</html>

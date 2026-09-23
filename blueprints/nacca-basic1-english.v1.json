@@ -1,0 +1,118 @@
+{
+  "blueprint": "nacca-basic1-english",
+  "version": 1,
+  "title": "Basic 1 English Language: Our World • Our Words",
+  "framework": "NACCA",
+  "subject": "ENG",
+  "grade": "B1",
+  "derived_from": "Approved 64-page Basic 1 pupil book (accepted edition, Sept 2026)",
+
+  "book": {
+    "total_pages": 64,
+    "front_matter": { "pages": [1, 4], "sections": ["cover_welcome", "contents_1_5", "contents_6_9", "how_to_use"] },
+    "themes_count": 9,
+    "units_per_theme": 3,
+    "theme_sequence": ["project", "unit_1", "unit_2", "unit_3", "assessment"],
+    "final_theme_assessment_includes": "cumulative_review"
+  },
+
+  "themes": [
+    { "number": 1, "title": "Our Natural World",                   "pages": [5, 11],  "colour": "#4E8A3A", "phonics": "stage1_groups_1_3", "grammar": "nouns" },
+    { "number": 2, "title": "Health and Well-being",               "pages": [12, 18], "colour": "#1F7F7A", "phonics": "stage1_groups_4_6", "grammar": "nouns_adjectives" },
+    { "number": 3, "title": "Safety",                              "pages": [19, 24], "colour": "#C8702A", "phonics": "stage1_groups_7_9", "grammar": "adjectives_verbs" },
+    { "number": 4, "title": "Caring for Our Forests",              "pages": [25, 31], "colour": "#2E6B3E", "phonics": "stage2_cvc",        "grammar": "verbs" },
+    { "number": 5, "title": "Social, Moral and Cultural Values",   "pages": [32, 37], "colour": "#7A4A95", "phonics": "stage2_cvc_review", "grammar": "adverbs" },
+    { "number": 6, "title": "Energy",                              "pages": [38, 43], "colour": "#B8901E", "phonics": "stage3_digraphs",   "grammar": "adverbs_conjunctions" },
+    { "number": 7, "title": "Technology",                          "pages": [44, 50], "colour": "#2F66A0", "phonics": "stage3_digraphs",   "grammar": "conjunctions" },
+    { "number": 8, "title": "Climate Change and Awareness",        "pages": [51, 57], "colour": "#3F86B0", "phonics": "stage4_word_families", "grammar": "prepositions" },
+    { "number": 9, "title": "Illegal Mining (Galamsey)",           "pages": [58, 64], "colour": "#A04A2A", "phonics": "stage4_5_review",   "grammar": "prepositions" }
+  ],
+
+  "oral_language_rotation": {
+    "unit_1": "song",
+    "unit_2": "rhyme",
+    "unit_3": "conversation",
+    "every_unit": "talk_about_it"
+  },
+
+  "phonics_pathway": {
+    "stage1": {
+      "description": "Single-letter sounds, all 26, taught in order",
+      "order": ["s","a","t","p","i","n","m","d","g","o","c","k","e","u","r","h","b","f","l","j","v","w","x","y","z","q"],
+      "groups_of": 3,
+      "themes": [1, 2, 3]
+    },
+    "stage2": { "description": "CVC blending by short vowel, then mixed review", "vowel_order": ["a","e","i","o","u"], "themes": [4, 5] },
+    "stage3": { "description": "Digraphs", "items": ["sh","ch","th","ck","ng","qu"], "themes": [6, 7] },
+    "stage4": { "description": "Word families", "items": ["-at","-an","-et","-en","-ig","-in","-og","-ot","-ug","-un"], "themes": [8, 9] },
+    "stage5": { "description": "Cumulative review and sight words", "sight_words": ["come","here","look","said"], "themes": [9] }
+  },
+
+  "grammar_roadmap": [
+    { "focus": "Nouns",        "label": "naming words",            "themes": [1, 2] },
+    { "focus": "Adjectives",   "label": "describing words",        "themes": [2, 3] },
+    { "focus": "Verbs",        "label": "action words",            "themes": [3, 4] },
+    { "focus": "Adverbs",      "label": "how an action is done",   "themes": [5, 6] },
+    { "focus": "Conjunctions", "label": "joining with and",        "themes": [6, 7] },
+    { "focus": "Prepositions", "label": "position words",          "themes": [8, 9] }
+  ],
+
+  "competency_sequence": ["listening_speaking", "vocabulary", "sound_word_building", "reading", "grammar", "writing"],
+
+  "page_layouts": {
+    "project": {
+      "pages": 1,
+      "blocks": ["theme_header", "hero_illustration", "anansi_says", "what_you_will_make", "project_steps", "you_will_need", "do_it_your_way", "teacher_note"]
+    },
+    "two_page_unit": {
+      "applies_to": ["unit_1", "unit_2"],
+      "left_page":  { "role": "oral and vocabulary", "blocks": ["unit_header", "hero_illustration", "oral_text", "talk_about_it", "vocabulary_strip", "language_bridge", "teacher_note"] },
+      "right_page": { "role": "phonics, reading, grammar, writing", "blocks": ["phonics", "reading", "grammar", "writing", "anansi_says", "teacher_note"] }
+    },
+    "one_page_unit": {
+      "applies_to": ["unit_3"],
+      "blocks": ["unit_header", "hero_illustration", "oral_text", "talk_about_it", "vocabulary_strip", "phonics", "grammar", "writing", "anansi_says", "teacher_note"]
+    },
+    "assessment": {
+      "pages": 1,
+      "blocks": ["assessment_intro", "assessment_tasks", "rubric", "teacher_note"]
+    }
+  },
+
+  "block_types": {
+    "theme_header":       { "required": ["theme_number", "title", "pages", "phonics_summary", "grammar_focus", "project_title"] },
+    "unit_header":        { "required": ["theme_number", "unit_number", "title", "competency_label"] },
+    "hero_illustration":  { "required": ["brief", "caption", "alt_text"], "rules": ["ghanaian_setting", "recurring_cast_or_inclusive_representation", "asset_used_once"] },
+    "oral_text":          { "required": ["form", "lines", "performance_instruction"], "form_enum": ["song", "rhyme", "conversation"] },
+    "talk_about_it":      { "required": ["questions"], "min_items": 2, "max_items": 4, "rules": ["connect_to_home_compound_market_community"] },
+    "vocabulary_strip":   { "required": ["words", "instruction"], "min_items": 5, "max_items": 6 },
+    "language_bridge":    { "required": ["languages", "rows", "instruction"], "languages": ["Twi", "Ewe", "Ga", "Dagbani"], "min_rows": 3, "max_rows": 4, "rules": ["native_speaker_review_required"] },
+    "phonics":            { "required": ["stage", "group", "sounds", "blend_items", "activity"], "rules": ["pure_sounds_only", "only_taught_graphemes"] },
+    "reading":            { "required": ["type", "sentences", "sight_words"], "rules": ["decodable_with_taught_sounds_or_marked_sight_word"] },
+    "grammar":            { "required": ["focus", "explanation", "examples", "your_turn"], "rules": ["heading_names_specific_focus", "matches_grammar_roadmap"] },
+    "writing":            { "required": ["tasks"], "rules": ["includes_trace_or_copy", "includes_draw_and_label"] },
+    "anansi_says":        { "required": ["text"], "render": "spider_icon_with_speech_bubble", "max_words": 45 },
+    "what_you_will_make": { "required": ["text"] },
+    "project_steps":      { "required": ["steps"], "min_items": 4, "max_items": 6, "rules": ["each_step_starts_with_bold_verb"] },
+    "you_will_need":      { "required": ["items"], "rules": ["low_cost_locally_available_materials"] },
+    "do_it_your_way":     { "required": ["modes", "text"] },
+    "teacher_note":       { "required": ["points"], "min_items": 3, "max_items": 5, "rules": ["first_unit_note_cites_content_standard", "includes_inclusion_adaptation"] },
+    "assessment_intro":   { "required": ["text"] },
+    "assessment_tasks":   { "required": ["tasks"], "exact_items": 4, "task_areas": ["oral_or_sign", "phonics", "grammar", "writing"] },
+    "rubric":             { "required": ["levels", "rows"], "levels": ["Beginning", "Approaching", "Meeting", "Exceeding"] }
+  },
+
+  "global_rules": {
+    "response_modes": ["Say it", "Sign it", "Point to it", "Place a card", "Draw it", "Write it"],
+    "response_mode_policy": "A signed, pointed or card-placed answer scores the same as a spoken one. Record the mode, never deduct.",
+    "guide_character": { "name": "Anansi", "render": "spider icon + speech bubble; never the text tag 'Anansi says:' alone" },
+    "recurring_cast": ["Ama", "Kojo", "Esi", "Yaw", "Abena"],
+    "inclusion": ["wheelchair user represented", "low-vision adaptation in teacher notes", "deaf/non-speaking response routes", "helper/partner option"],
+    "setting": "Ghanaian: compound, market, farm, school garden, local foods, plants and animals, place names",
+    "spelling": "British English (colour, favourite, programme)",
+    "vocabulary_recycling": "Words introduced in Listening & Speaking must reappear in later blocks of the same theme",
+    "project_continuity": "Every unit adds to the theme project; the assessment checks the project",
+    "carry_forward_policy": "Learners at Beginning on blending carry the phonics groups into the next theme. Do not move them on and hope.",
+    "illustrations": "Each asset used once per edition; alt text required"
+  }
+}

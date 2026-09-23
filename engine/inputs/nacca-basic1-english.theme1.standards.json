@@ -1,0 +1,10 @@
+{
+  "note": "Demo input. Taken from the Theme 1 teacher note in the approved book. Replace with the standards extracted from the official NaCCA curriculum document once that step is built.",
+  "framework": "NACCA",
+  "grade": "B1",
+  "subject": "ENG",
+  "theme": 1,
+  "standards": [
+    "B1.1.1 — listen to and respond to simple songs and texts about the immediate environment."
+  ]
+}

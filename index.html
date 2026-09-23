@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Syllabus Core Architect: Cosmos Publishers preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1F3657; --ink-soft:#4A5A75; --teal:#2A9D8F; --teal-deep:#1E7A6F;
+  --margin-red:#C8373A; --rule-blue:#B9CCE6; --pass:#1F8A5B; --warn:#C9831A; --fail:#B5413B;
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F6F8FB; --line:#D9E0EA; --text:#1B2533; --muted:#5B677A;
+  --page:#FFFFFF; --sidebar:#1F3657; --sidebar-text:#DDE6F2; --sidebar-muted:#9FB0C9;
+  --focus:#2A9D8F; --shadow:0 1px 2px rgba(20,32,55,.08),0 6px 18px rgba(20,32,55,.06);
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --serif:"Literata",Georgia,"Times New Roman",serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#10161F; --surface:#18212D; --surface-2:#1E2936; --line:#2D3A4B; --text:#E6ECF4; --muted:#9AA8BB;
+    --page:#F7F7F2; --sidebar:#0C1520; --sidebar-text:#DDE6F2; --sidebar-muted:#8193AC; --ink:#9DB8E0; --ink-soft:#B3C3DA;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10161F; --surface:#18212D; --surface-2:#1E2936; --line:#2D3A4B; --text:#E6ECF4; --muted:#9AA8BB;
+  --page:#F7F7F2; --sidebar:#0C1520; --sidebar-text:#DDE6F2; --sidebar-muted:#8193AC; --ink:#9DB8E0; --ink-soft:#B3C3DA;
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.5}
+img{max-width:100%}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100%}
+.sidebar{background:var(--sidebar);color:var(--sidebar-text);padding:22px 16px;display:flex;flex-direction:column;gap:22px;position:sticky;top:env(safe-area-inset-top,0px);height:100vh;height:100dvh}
+.brand{display:flex;gap:10px;align-items:center}
+.brand-mark{width:36px;height:36px;border-radius:8px;background:var(--teal);display:grid;place-items:center;font-weight:700;color:#fff;letter-spacing:-.02em}
+.brand-name{font-weight:600;font-size:15px;line-height:1.2}
+.brand-sub{font-size:12px;color:var(--sidebar-muted)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button{all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--sidebar-text);font-size:14px}
+.nav button:hover{background:rgba(255,255,255,.07)}
+.nav button[aria-current="page"]{background:rgba(42,157,143,.22);color:#fff;font-weight:600}
+.nav button:focus-visible{outline:2px solid var(--teal);outline-offset:0}
+.nav svg{width:18px;height:18px;flex:none;opacity:.9}
+.side-foot{margin-top:auto;font-size:12px;color:var(--sidebar-muted);border-top:1px solid rgba(255,255,255,.1);padding-top:14px}
+.side-foot strong{color:var(--sidebar-text);font-weight:600}
+
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;gap:14px;padding:14px 28px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+.topbar h1{font-size:18px;margin:0;font-weight:600;letter-spacing:-.01em}
+.topbar .spacer{flex:1}
+.demo-pill{font-size:12px;background:rgba(201,131,26,.14);color:var(--warn);padding:4px 10px;border-radius:999px;font-weight:600}
+.icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:13px}
+.content{padding:24px 28px 48px;max-width:1240px;width:100%}
+.view{display:none}.view.active{display:block}
+.lede{color:var(--muted);margin:0 0 20px;max-width:70ch}
+
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g-wide{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}.g-32{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}.g-team{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
+[hidden]{display:none!important}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+.panel h2{font-size:16px;margin:0 0 4px;font-weight:600}
+.panel .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.stat{font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.stat-label{color:var(--muted);font-size:13px;margin-top:4px}
+.stat small{font-size:14px;color:var(--muted);font-weight:500}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.s-draft{color:var(--muted);background:var(--surface-2)}
+.s-review{color:#2B6CB0;background:rgba(43,108,176,.12)}
+.s-pass{color:var(--pass);background:rgba(31,138,91,.12)}
+.s-warn{color:var(--warn);background:rgba(201,131,26,.14)}
+.s-fail{color:var(--fail);background:rgba(181,65,59,.12)}
+.s-sub{color:var(--teal-deep);background:rgba(42,157,143,.14)}
+.score-cell{font-variant-numeric:tabular-nums;font-weight:600}
+
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:9px;padding:10px 16px;font-weight:600;cursor:pointer;font-size:14px}
+.btn-primary{background:var(--teal);color:#fff}.btn-primary:hover{background:var(--teal-deep)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+.alert{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);font-size:14px}
+.alert .dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none}
+
+/* Curriculum tree */
+.selectors{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.selectors label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted);font-weight:600}
+.selectors select{min-width:190px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-weight:500}
+.tree{list-style:none;margin:0;padding:0}
+.tree li{margin:0}
+.strand{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--surface)}
+.strand > summary{cursor:pointer;padding:12px 14px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.strand > summary::-webkit-details-marker{display:none}
+.strand > summary .count{color:var(--muted);font-weight:500;font-size:13px}
+.strand-body{padding:0 14px 12px}
+.substrand{padding:10px 12px;border-left:3px solid var(--rule-blue);margin:8px 0;background:var(--surface-2);border-radius:0 8px 8px 0}
+.substrand label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.substrand input{margin-top:4px;accent-color:var(--teal)}
+.substrand .ind{color:var(--muted);font-size:13px;margin:6px 0 0 26px}
+.tree-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
+.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px;background:var(--surface)}
+
+/* Studio */
+.studio{display:grid;grid-template-columns:260px 1fr;gap:16px;align-items:start}
+.lesson-map{position:sticky;top:78px}
+.lesson-map ol{margin:0;padding:0;list-style:none}
+.lesson-map li button{all:unset;cursor:pointer;display:block;width:100%;padding:10px 12px;border-radius:8px;font-size:14px;box-sizing:border-box}
+.lesson-map li button:hover{background:var(--surface-2)}
+.lesson-map li button[aria-current="true"]{background:rgba(42,157,143,.14);font-weight:600;color:var(--teal-deep)}
+.lesson-map .unit{font-weight:600;font-size:14px;margin:4px 0 8px}
+.agents{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.agent{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--surface);position:relative;overflow:hidden}
+.agent .name{font-weight:600;font-size:13.5px}
+.agent .job{font-size:12.5px;color:var(--muted);margin-top:2px}
+.agent .state{font-size:12px;font-weight:600;margin-top:8px;color:var(--muted)}
+.agent .bar{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--teal);transition:width .9s ease}
+.agent.working .state{color:var(--teal-deep)}
+.agent.done .state{color:var(--pass)}
+.agent.done .bar{width:100%;background:var(--pass)}
+.agent.working .bar{width:70%}
+
+.book{background:var(--page);color:#1F2733;border-radius:6px;box-shadow:0 2px 12px rgba(20,32,55,.12);position:relative;padding:36px 40px 40px 76px;font-family:var(--serif);font-size:16px;line-height:32px;
+  background-image:linear-gradient(to right,transparent 58px,var(--margin-red) 58px,var(--margin-red) 60px,transparent 60px),repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--rule-blue) 31px,var(--rule-blue) 32px);
+  background-position:0 0,0 27px}
+.book h3{font-family:var(--serif);font-size:22px;line-height:32px;margin:0 0 0;font-weight:600;color:#1F3657}
+.book h4{font-family:var(--sans);font-size:14px;line-height:32px;margin:32px 0 0;color:#1E7A6F;font-weight:700}
+.book p,.book li{margin:0}
+.book ol,.book ul{margin:0;padding-left:22px}
+.book .meta{font-family:var(--sans);font-size:13px;color:#5B677A}
+.book .script{font-style:italic}
+.book .mcq li{margin-bottom:0}
+.book .opts{font-family:var(--sans);font-size:14px;color:#4A5568}
+.book.hidden{display:none}
+.gen-placeholder{border:1px dashed var(--line);border-radius:10px;padding:40px 24px;text-align:center;color:var(--muted);background:var(--surface)}
+.studio-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.mini-score{display:flex;align-items:center;gap:10px;margin-left:auto;font-size:13px}
+.mini-score .val{font-weight:700;font-size:18px;color:var(--pass);font-variant-numeric:tabular-nums}
+
+/* Scorecard */
+.gauges{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.gauge{display:flex;gap:18px;align-items:center}
+.ring{width:112px;height:112px;flex:none}
+.ring circle{fill:none;stroke-width:10}
+.ring .track{stroke:var(--line)}
+.ring .val{stroke:var(--pass);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.2s ease}
+.ring text{font-family:var(--sans);font-weight:700;font-size:22px;fill:var(--text)}
+.gate-note{font-size:13px;color:var(--muted)}
+.crit{display:grid;grid-template-columns:230px 1fr 52px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.crit:last-child{border-bottom:none}
+.meter{height:10px;background:var(--surface-2);border-radius:999px;position:relative;overflow:visible;border:1px solid var(--line)}
+.meter .fill{height:100%;border-radius:999px;background:var(--teal);width:0;transition:width 1s ease}
+.meter .gate{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--margin-red)}
+.crit .num{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.fixes li{margin-bottom:8px}
+.title-switch{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#10161F}
+
+/* Languages */
+.lang-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.kbd{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.kbd button{min-width:40px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);cursor:pointer;font-size:17px}
+textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--surface);resize:vertical;font-size:16px}
+.review-flag{display:inline-flex;gap:6px;align-items:center;font-size:12.5px;font-weight:600;color:var(--warn);background:rgba(201,131,26,.14);padding:4px 10px;border-radius:999px}
+.rtl{direction:rtl;text-align:right}
+
+/* Submission */
+.set-list{list-style:none;padding:0;margin:0}
+.set-list li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.set-list li:last-child{border-bottom:none}
+.cover{aspect-ratio:3/4;max-width:250px;border-radius:6px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(160deg,#1F3657,#2A9D8F);color:#fff;box-shadow:0 6px 20px rgba(20,32,55,.25);transition:filter .4s}
+.cover .pub{font-size:13px;font-weight:600;letter-spacing:.02em}
+.cover .t{font-family:var(--serif);font-size:24px;line-height:1.2}
+.cover .code{font-size:12px;opacity:.85}
+.cover.anon{background:linear-gradient(160deg,#5B677A,#8A96A8)}
+.toggle{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;font-weight:500}
+.toggle input{width:40px;height:22px;appearance:none;background:var(--line);border-radius:999px;position:relative;cursor:pointer;transition:background .2s}
+.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s}
+.toggle input:checked{background:var(--teal)}.toggle input:checked::after{left:21px}
+.countdown{font-size:40px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.windows{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-top:14px}
+.windows div{height:34px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line);font-size:11px;display:grid;place-items:center;color:var(--muted)}
+.windows .open{background:rgba(42,157,143,.2);border-color:var(--teal);color:var(--teal-deep);font-weight:700}
+.windows .now{outline:2px solid var(--ink)}
+.hash{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;word-break:break-all;background:var(--surface-2);padding:8px 10px;border-radius:6px;border:1px solid var(--line)}
+
+/* Monitor */
+.timeline{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--line)}
+.timeline li{position:relative;padding:0 0 18px 16px}
+.timeline li::before{content:"";position:absolute;left:-25px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--teal)}
+.timeline li.change::before{background:var(--warn);border-color:var(--warn)}
+.timeline .when{font-weight:600;font-size:14px}
+.timeline .what{color:var(--muted);font-size:13.5px}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:all .25s;z-index:20;max-width:90vw}
+:root[data-theme="dark"] .toast{color:#10161F}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Uploads */
+.dropzone{border:2px dashed var(--line);border-radius:14px;background:var(--surface);padding:34px 20px;text-align:center;transition:border-color .2s,background .2s;cursor:pointer}
+.dropzone.over{border-color:var(--teal);background:rgba(42,157,143,.07)}
+.dropzone strong{display:block;font-size:16px;margin-bottom:4px}
+.dropzone p{margin:0;color:var(--muted);font-size:14px}
+.dropzone .btn{margin-top:14px}
+.file-row{display:grid;grid-template-columns:36px 1fr 190px 120px 32px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.file-row:last-child{border-bottom:none}
+.ficon{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;background:var(--ink-soft)}
+.ficon.pdf{background:#B5413B}.ficon.doc{background:#2B6CB0}.ficon.img{background:#2A9D8F}.ficon.sheet{background:#1F8A5B}
+.fname{font-weight:600;word-break:break-word}.fmeta{color:var(--muted);font-size:12.5px}
+.file-row select{padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:13px;width:100%}
+.prog{height:6px;background:var(--surface-2);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.prog div{height:100%;width:0;background:var(--teal);transition:width .3s}
+.rm{all:unset;cursor:pointer;color:var(--muted);font-size:18px;text-align:center;border-radius:6px}
+.rm:hover{color:var(--fail)}
+.cat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cat{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--surface-2);font-size:13.5px}
+.cat-grid.one{grid-template-columns:1fr}
+.cat strong{display:block;font-size:14px;margin-bottom:2px}
+/* Team */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid label{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.form-grid input,.form-grid select{padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:14px;font-weight:500;color:var(--text)}
+.form-grid .full{grid-column:1/-1}
+.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff;background:var(--ink-soft);flex:none}
+.who{display:flex;align-items:center;gap:10px}
+.who small{display:block;color:var(--muted);font-size:12.5px}
+td select{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:13px}
+.perm td,.perm th{text-align:center}.perm td:first-child,.perm th:first-child{text-align:left}
+.yes{color:var(--pass);font-weight:700}.no{color:var(--muted)}
+.form-error{color:var(--fail);font-size:13px;margin-top:8px;min-height:1em}
+@media (max-width:1100px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.agents{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .sidebar{position:sticky;top:env(safe-area-inset-top,0px);height:auto;flex-direction:row;align-items:center;padding:10px 12px;gap:12px;z-index:10;overflow-x:auto}
+  .brand-sub,.side-foot,.brand-name{display:none}
+  .nav{flex-direction:row;gap:4px}
+  .nav button{white-space:nowrap;padding:8px 10px}
+  .nav button span{display:none}
+  .nav button[aria-current="page"] span{display:inline}
+  .topbar{position:static;padding:12px 16px}
+  .content{padding:18px 16px 40px}
+  .studio,.g2,.gauges,.g-wide,.g-32,.g-team{grid-template-columns:minmax(0,1fr)}
+  .lesson-map{position:static}
+  .file-row{grid-template-columns:36px minmax(0,1fr) 28px}.file-row>:nth-child(1){grid-column:1;grid-row:1}.file-row>:nth-child(2){grid-column:2;grid-row:1}.file-row>:nth-child(5){grid-column:3;grid-row:1}.file-row>:nth-child(3){grid-column:2;grid-row:2}.file-row>:nth-child(4){grid-column:2;grid-row:3}
+  .form-grid,.cat-grid{grid-template-columns:1fr}
+  .crit{grid-template-columns:1fr 44px}.crit .meter{grid-column:1/-1;grid-row:2}
+  .book{padding:28px 18px 32px 52px;background-image:linear-gradient(to right,transparent 38px,var(--margin-red) 38px,var(--margin-red) 40px,transparent 40px),repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--rule-blue) 31px,var(--rule-blue) 32px)}
+}
+@media (max-width:520px){.g4{grid-template-columns:1fr 1fr}.agents{grid-template-columns:1fr 1fr}.stat{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" aria-label="Main navigation">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">SC</div>
+      <div><div class="brand-name">Syllabus Core Architect</div><div class="brand-sub">Cosmos Publishers workspace</div></div>
+    </div>
+    <nav class="nav" id="nav">
+      <button data-view="dashboard" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Dashboard</span></button>
+      <button data-view="curriculum"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v18M6 7h8M6 12h10M6 17h6"/><circle cx="17" cy="7" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="15" cy="17" r="2"/></svg><span>Curriculum</span></button>
+      <button data-view="studio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M9 7h6M9 11h6"/></svg><span>Content studio</span></button>
+      <button data-view="scorecard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Scorecard</span></button>
+      <button data-view="languages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 5h10M8 3v2M5 5c1 4 4 7 7 8M11 5c-1 4-4 7-7 8"/><path d="M13 21l4-9 4 9M14.5 18h5"/></svg><span>Languages</span></button>
+      <button data-view="submission"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H4z"/><path d="M8 20h8M12 16v4M8 9l3 3 5-5"/></svg><span>Submission</span></button>
+      <button data-view="uploads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg><span>Uploads</span></button>
+      <button data-view="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M17 8v6M14 11h6"/></svg><span>Team</span></button>
+      <button data-view="monitor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Curriculum updates</span></button>
+    </nav>
+    <div class="side-foot"><strong>Interactive preview</strong><br>Prepared for Peter Eselecha, Cosmos Publishers. All titles and scores shown are sample data.</div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1 id="view-title">Dashboard</h1>
+      <span class="demo-pill">Preview with sample content</span>
+      <span class="spacer"></span>
+      <button class="icon-btn" id="theme-btn" aria-label="Switch colour theme">Switch theme</button>
+    </header>
+
+    <main class="content">
+      <!-- DASHBOARD -->
+      <section class="view active" id="view-dashboard" aria-labelledby="view-title">
+        <p class="lede">Every Cosmos title in one place, from first draft to NaCCA submission. Each book is scored against NaCCA's approval thresholds before it reaches your reviewers.</p>
+        <div class="grid g4" style="margin-bottom:16px">
+          <div class="panel"><div class="stat">6</div><div class="stat-label">Titles in production</div></div>
+          <div class="panel"><div class="stat">88<small>%</small></div><div class="stat-label">Average compliance score</div></div>
+          <div class="panel"><div class="stat" id="days-left">–</div><div class="stat-label">Days until the January submission window</div></div>
+          <div class="panel"><div class="stat">1</div><div class="stat-label">Title approved for export</div></div>
+        </div>
+        <div class="grid g-wide">
+          <div class="panel">
+            <h2>Title tracker</h2>
+            <p class="sub">Select a title to see its compliance scorecard.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Title</th><th>Book</th><th>Score</th><th>Status</th><th>Updated</th></tr></thead>
+                <tbody id="tracker"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="grid" style="align-content:start">
+            <div class="panel">
+              <h2>Curriculum check</h2>
+              <p class="sub">Last checked 1 September 2026 at 00:00 GMT</p>
+              <div class="alert"><span class="dot" style="background:var(--pass)"></span><div>No changes to Kindergarten to Basic 9 standards were found. Next check: 1 October 2026.</div></div>
+            </div>
+            <div class="panel">
+              <h2>Needs your attention</h2>
+              <p class="sub">Items waiting on Cosmos reviewers</p>
+              <div class="alert" style="margin-bottom:10px"><span class="dot" style="background:#2B6CB0"></span><div><strong>Basic 1 English Language</strong><br>Ready for your curriculum reviewer.</div></div>
+              <div class="alert"><span class="dot" style="background:var(--fail)"></span><div><strong>Basic 4 Science</strong><br>Curriculum conformity is 74%, below NaCCA's 80% gate. Fixes are listed on its scorecard.</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CURRICULUM -->
+      <section class="view" id="view-curriculum">
+        <p class="lede">Choose a phase, class and subject to load its NaCCA standards. Tick the sub-strands you want in the lesson, then generate.</p>
+        <div class="selectors">
+          <label>Phase<select id="sel-phase"></select></label>
+          <label>Class<select id="sel-grade"></select></label>
+          <label>Subject<select id="sel-subject"></select></label>
+        </div>
+        <div id="tree-area"></div>
+      </section>
+
+      <!-- STUDIO -->
+      <section class="view" id="view-studio">
+        <div class="studio">
+          <div class="panel lesson-map">
+            <div class="unit">Basic 1 English Language<br><span style="font-weight:400;color:var(--muted);font-size:13px">Unit 1: What we see in nature</span></div>
+            <ol id="lesson-list">
+              <li><button aria-current="true" data-lesson="1">Lesson 1: Naming things around us</button></li>
+              <li><button data-lesson="2">Lesson 2: Living and non-living things</button></li>
+              <li><button data-lesson="3">Lesson 3: Sounds we hear outside</button></li>
+              <li><button data-lesson="4">Lesson 4: My nature picture</button></li>
+            </ol>
+          </div>
+          <div>
+            <div class="agents" id="agents">
+              <div class="agent" data-i="0"><div class="name">Curriculum Aligner</div><div class="job">Matches every activity to the NaCCA standards you ticked</div><div class="state">Waiting</div><div class="bar"></div></div>
+              <div class="agent" data-i="1"><div class="name">Research Engine</div><div class="job">Adds local context: plants, animals and places in Ghana</div><div class="state">Waiting</div><div class="bar"></div></div>
+              <div class="agent" data-i="2"><div class="name">Pedagogical Stylist</div><div class="job">Writes in Ghanaian English at a Basic 1 reading level</div><div class="state">Waiting</div><div class="bar"></div></div>
+              <div class="agent" data-i="3"><div class="name">Compliance Evaluator</div><div class="job">Scores the lesson against NaCCA's 80% and 65% gates</div><div class="state">Waiting</div><div class="bar"></div></div>
+            </div>
+            <div class="studio-bar">
+              <button class="btn btn-primary" id="generate-btn">Generate lesson</button>
+              <button class="btn btn-ghost" data-toast="Sent to your curriculum reviewer.">Send for review</button>
+              <button class="btn btn-ghost" data-toast="Exports are available in the full platform.">Export PDF</button>
+              <div class="mini-score" id="mini-score" hidden><span>Compliance score</span><span class="val" id="mini-val">0%</span></div>
+            </div>
+            <div class="gen-placeholder" id="gen-placeholder">Select <strong>Generate lesson</strong> to watch the four agents build Lesson 1.</div>
+            <article class="book hidden" id="book" aria-live="polite">
+              <p class="meta">Basic 1 English Language, Unit 1. Learner's book with teacher's notes.</p>
+              <h3>Lesson 1: Naming things around us</h3>
+              <p class="meta">Sample indicator: Talk about things they see around them using simple words.</p>
+
+              <h4>Lesson overview</h4>
+              <p>Learners walk around the school compound, look closely and name the things they see. They practise saying simple sentences such as “I see a mango tree.”</p>
+
+              <h4>Teacher's script</h4>
+              <p class="script">“Good morning, class. Today we are going on a nature walk around our school. Look carefully and listen well. When I clap my hands, stop and tell your partner one thing you can see.”</p>
+
+              <h4>Activities</h4>
+              <ol>
+                <li><strong>Nature walk.</strong> Learners name three things they see: a mango tree, a palm tree, grass, stones, a hen or the clouds.</li>
+                <li><strong>Picture talk.</strong> In pairs, learners point to a picture card and say, “This is a goat.”</li>
+                <li><strong>Grow or not grow?</strong> Learners sort picture cards into two groups: things that grow and things that do not grow.</li>
+              </ol>
+
+              <h4>Support and extension</h4>
+              <p><strong>Extra support:</strong> use picture cards with the word printed underneath.<br><strong>Extension:</strong> learners draw their favourite thing from the walk and say one sentence about it.</p>
+
+              <h4>Check for understanding</h4>
+              <ol class="mcq">
+                <li>Which one is a tree? <span class="opts">(a) goat  (b) mango tree  (c) stone</span></li>
+                <li>Which one can fly? <span class="opts">(a) bird  (b) grass  (c) rock</span></li>
+                <li>What do we see in the sky? <span class="opts">(a) clouds  (b) goats  (c) chairs</span></li>
+                <li>Which one grows? <span class="opts">(a) stone  (b) palm tree  (c) bucket</span></li>
+                <li>Finish the sentence: “I see a …” <span class="opts">(a) hen  (b) run  (c) big</span></li>
+              </ol>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCORECARD -->
+      <section class="view" id="view-scorecard">
+        <p class="lede">Each title is scored on the same thresholds NaCCA's assessors use: at least 80% for curriculum conformity and 65% overall. The red line marks the 80% curriculum gate.</p>
+        <div class="title-switch" id="title-switch"></div>
+        <div class="gauges">
+          <div class="panel gauge">
+            <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="track" cx="60" cy="60" r="50"/><circle class="val" id="ring-cur" cx="60" cy="60" r="50" stroke-dasharray="314.16" stroke-dashoffset="314.16"/><text x="60" y="68" text-anchor="middle" id="ring-cur-t">0%</text></svg>
+            <div><h2>Curriculum conformity</h2><p class="gate-note" id="cur-note">NaCCA gate: 80%</p></div>
+          </div>
+          <div class="panel gauge">
+            <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="track" cx="60" cy="60" r="50"/><circle class="val" id="ring-all" cx="60" cy="60" r="50" stroke-dasharray="314.16" stroke-dashoffset="314.16"/><text x="60" y="68" text-anchor="middle" id="ring-all-t">0%</text></svg>
+            <div><h2>Overall score</h2><p class="gate-note" id="all-note">NaCCA gate: 65%</p></div>
+          </div>
+        </div>
+        <div class="grid g-32">
+          <div class="panel"><h2>Score by criterion</h2><p class="sub">Weightings are set from the NaCCA mark sheet during onboarding.</p><div id="criteria"></div></div>
+          <div class="panel"><h2>What the evaluator changed or flagged</h2><p class="sub">Every change is logged for your reviewers.</p><ul class="fixes" id="fixes"></ul>
+            <button class="btn btn-ghost" data-toast="Scorecard reports download in the full platform.">Download scorecard report</button></div>
+        </div>
+      </section>
+
+      <!-- LANGUAGES -->
+      <section class="view" id="view-languages">
+        <p class="lede">Ghanaian Language, French and Arabic are written and scored in their own language, not translated from English afterwards. Every Ghanaian language draft goes to a native-speaker reviewer before release.</p>
+        <div class="lang-tabs" id="lang-tabs"></div>
+        <div class="grid g2">
+          <div class="panel" id="lang-panel"></div>
+          <div class="panel">
+            <h2>Special-character keyboard</h2>
+            <p class="sub">Type Ghanaian language letters without changing your computer's settings.</p>
+            <div class="kbd" id="kbd"></div>
+            <label for="kbd-area" class="sub" style="display:block;margin-bottom:6px">Try it</label>
+            <textarea id="kbd-area" placeholder="Click a letter above to add it here"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- SUBMISSION -->
+      <section class="view" id="view-submission">
+        <p class="lede">Everything NaCCA asks for, prepared from one source: the learner's book, teacher's guide and workbook, anonymous assessor copies, and a record of exactly which version you submitted.</p>
+        <div class="grid g2" style="margin-bottom:16px">
+          <div class="panel">
+            <h2>Basic 1 English Language: submission set</h2>
+            <p class="sub">Generated from the same source, so all three books always match.</p>
+            <ul class="set-list">
+              <li><span>Learner's book</span><span class="status s-pass">Ready</span></li>
+              <li><span>Teacher's guide</span><span class="status s-review">In review</span></li>
+              <li><span>Workbook</span><span class="status s-draft">Draft</span></li>
+              <li><span>Scorecard report</span><span class="status s-pass">Passed</span></li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h2>Next submission window</h2>
+            <p class="sub">NaCCA accepts submissions from 1 to 31 January and 1 to 31 July.</p>
+            <div class="countdown" id="countdown">–</div>
+            <div class="stat-label">days until 1 January 2027</div>
+            <div class="windows" id="windows"></div>
+          </div>
+        </div>
+        <div class="grid g2">
+          <div class="panel" style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+            <div class="cover" id="cover"><div class="pub" id="cover-pub">Cosmos Publishers</div><div class="t" id="cover-t">English Language<br>Basic 1</div><div class="code" id="cover-code">Learner's book</div></div>
+            <div style="flex:1;min-width:200px">
+              <h2>Anonymous assessor copy</h2>
+              <p class="sub">NaCCA's assessors review books without knowing the publisher. One switch removes every mention of Cosmos.</p>
+              <label class="toggle"><input type="checkbox" id="anon-toggle"> Remove publisher branding</label>
+            </div>
+          </div>
+          <div class="panel">
+            <h2>Version proof</h2>
+            <p class="sub">A permanent record of the exact version submitted, so your printed books can be matched to the approved one.</p>
+            <ul class="set-list">
+              <li><span>Version</span><strong>v1.3</strong></li>
+              <li><span>Locked</span><span>Sample: 14 January 2027, 10:42 GMT</span></li>
+              <li><span>Approved by</span><span>Curriculum and design reviewers</span></li>
+            </ul>
+            <p class="sub" style="margin:12px 0 6px">Fingerprint</p>
+            <div class="hash">sca-b1-eng-lb 9f2c 71ad 4e08 b6c3 1d57 a902 e4f8 3b61</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- UPLOADS -->
+      <section class="view" id="view-uploads">
+        <p class="lede">Add the documents the platform works from: NaCCA guidelines, your existing manuscripts, brand assets and illustrations. Everything is stored in Cosmos's own hosting account.</p>
+        <div class="grid g-wide" style="margin-bottom:16px">
+          <div>
+            <input type="file" id="file-input" multiple hidden accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg,.svg,.txt">
+            <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload files">
+              <strong>Drag files here to upload</strong>
+              <p>PDF, Word, Excel, CSV and images up to 50 MB each</p>
+              <button class="btn btn-primary" type="button" id="browse-btn">Choose files</button>
+            </div>
+            <p class="sub" style="color:var(--muted);font-size:12.5px;margin:8px 2px 0">In this preview, files stay on your device and are not sent anywhere.</p>
+          </div>
+          <div class="panel">
+            <h2>What to upload</h2>
+            <p class="sub">The platform uses each type differently.</p>
+            <div class="cat-grid one">
+              <div class="cat"><strong>NaCCA guidelines</strong>Sets the scorecard criteria and weightings.</div>
+              <div class="cat"><strong>Manuscripts</strong>Imports existing books so they can be scored and improved.</div>
+              <div class="cat"><strong>Brand assets</strong>Logos, fonts and templates for print-ready exports.</div>
+              <div class="cat"><strong>Illustrations</strong>Images placed in lessons and checked for cultural fit.</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>File library</h2>
+          <p class="sub" id="file-count">3 files</p>
+          <div id="file-list"></div>
+        </div>
+      </section>
+
+      <!-- TEAM -->
+      <section class="view" id="view-team">
+        <p class="lede">Invite your editors and reviewers, and choose what each person can do. Everyone signs in with two-step verification.</p>
+        <div class="grid g-team" style="margin-bottom:16px">
+          <div class="panel">
+            <h2>Add a user</h2>
+            <p class="sub">They'll receive an email invitation to set their password.</p>
+            <form id="invite-form" novalidate>
+              <div class="form-grid">
+                <label>Full name<input id="u-name" autocomplete="off" placeholder="e.g. Akosua Mensah"></label>
+                <label>Email<input id="u-email" type="email" autocomplete="off" placeholder="name@cosmospublishers.com"></label>
+                <label class="full">Role<select id="u-role"></select></label>
+                <label class="full" id="lang-wrap" hidden>Language they review<select id="u-lang"><option>Asante Twi</option><option>Ewe</option><option>Ga</option><option>French</option><option>Arabic</option></select></label>
+              </div>
+              <div class="form-error" id="form-error" role="alert"></div>
+              <button class="btn btn-primary" type="submit" style="margin-top:6px">Send invitation</button>
+            </form>
+          </div>
+          <div class="panel">
+            <h2>Team members</h2>
+            <p class="sub" id="team-count"></p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Name</th><th>Role</th><th>Status</th><th><span class="sr-only" style="position:absolute;left:-9999px">Actions</span></th></tr></thead>
+              <tbody id="team-body"></tbody>
+            </table></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>What each role can do</h2>
+          <p class="sub">Roles can be changed at any time by an administrator.</p>
+          <div class="table-wrap"><table class="perm">
+            <thead><tr><th>Role</th><th>Generate content</th><th>Edit content</th><th>Approve</th><th>Export and submit</th><th>Manage users</th></tr></thead>
+            <tbody id="perm-body"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- MONITOR -->
+      <section class="view" id="view-monitor">
+        <p class="lede">On the 1st of every month the platform checks NaCCA, GES and Ministry of Education websites. When a standard changes, the old version is archived and every affected title is flagged. Your finished books never change without your approval.</p>
+        <div class="grid g2">
+          <div class="panel">
+            <h2>Check history</h2>
+            <p class="sub">Sample history</p>
+            <ol class="timeline">
+              <li><div class="when">1 September 2026</div><div class="what">All Kindergarten to Basic 9 subjects checked. No changes found.</div></li>
+              <li><div class="when">1 August 2026</div><div class="what">NaCCA website offline at 00:00. Retried at 12:00 and completed. No changes found.</div></li>
+              <li class="change"><div class="when">1 July 2026</div><div class="what">Our World Our People: primary guidance updated. Previous version archived as v1.2. Two titles flagged for review.</div></li>
+              <li><div class="when">1 June 2026</div><div class="what">All subjects checked. No changes found.</div></li>
+            </ol>
+          </div>
+          <div class="panel">
+            <h2>Archive</h2>
+            <p class="sub">Nothing is ever deleted. Every earlier version stays available.</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Subject</th><th>Version</th><th>Archived</th></tr></thead>
+              <tbody>
+                <tr><td>Our World Our People (B1–B6)</td><td>v1.2</td><td>1 Jul 2026</td></tr>
+                <tr><td>Computing (B4–B6)</td><td>v1.1</td><td>1 Mar 2026</td></tr>
+                <tr><td>English Language (B1–B3)</td><td>v1.0</td><td>1 Nov 2025</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+  const titles={dashboard:"Dashboard",curriculum:"Curriculum",studio:"Content studio",scorecard:"Compliance scorecard",languages:"Languages",submission:"Submission",uploads:"Uploads",team:"Team",monitor:"Curriculum updates"};
+
+  // theme
+  try{const t=localStorage.getItem("sca-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}
+  $("#theme-btn").addEventListener("click",()=>{
+    const cur=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+    const next=cur==="dark"?"light":"dark";document.documentElement.dataset.theme=next;
+    try{localStorage.setItem("sca-theme",next)}catch(e){}
+  });
+
+  // toast
+  let tt;function toast(m){const el=$("#toast");el.textContent=m;el.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>el.classList.remove("show"),2600)}
+  document.addEventListener("click",e=>{const b=e.target.closest("[data-toast]");if(b)toast(b.dataset.toast)});
+
+  // navigation
+  function show(v){
+    if(!titles[v])v="dashboard";
+    $$(".view").forEach(s=>s.classList.toggle("active",s.id==="view-"+v));
+    $$("#nav button").forEach(b=>{if(b.dataset.view===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+    $("#view-title").textContent=titles[v];
+    if(v==="scorecard")renderScore(currentTitle);
+    window.scrollTo({top:0});
+  }
+  $$("#nav button").forEach(b=>b.addEventListener("click",()=>{location.hash=b.dataset.view}));
+  window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
+
+  // days to window
+  function daysTo(){const now=new Date();const target=new Date(2027,0,1);return Math.max(0,Math.ceil((target-now)/864e5))}
+  $("#days-left").textContent=daysTo();$("#countdown").textContent=daysTo();
+  const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];const nowM=new Date().getMonth();
+  $("#windows").innerHTML=months.map((m,i)=>`<div class="${(i===0||i===6)?"open":""} ${i===nowM?"now":""}">${m}</div>`).join("");
+
+  // title data
+  const T=[
+    {id:"b1eng",name:"Basic 1 English Language",book:"Learner's book",status:["In curriculum review","s-review"],updated:"22 Sep 2026",
+      scores:[["Curriculum conformity",91,80],["Age and reading level",88],["Ghanaian context",94],["Inclusivity and gender sensitivity",90],["Laws and cultural norms",96],["Language accuracy",89],["Assessment alignment",84],["Submission format",86]],cur:91,all:89,
+      fixes:["Question 4 tested an indicator from Unit 2. It was replaced with one that matches Lesson 1.","A sentence in Activity 2 was longer than Basic 1 reading level allows. It was shortened.","Illustration brief updated so that boys and girls appear equally in the nature walk."]},
+    {id:"b1engtg",name:"Basic 1 English Language",book:"Teacher's guide",status:["Draft","s-draft"],updated:"22 Sep 2026",
+      scores:[["Curriculum conformity",86,80],["Age and reading level",90],["Ghanaian context",92],["Inclusivity and gender sensitivity",91],["Laws and cultural norms",95],["Language accuracy",87],["Assessment alignment",82],["Submission format",78]],cur:86,all:87,
+      fixes:["Teacher's notes for Lesson 3 were missing a remedial activity. One was added.","Page layout will be finalised by the design team before export."]},
+    {id:"b2math",name:"Basic 2 Mathematics",book:"Learner's book",status:["Approved for export","s-pass"],updated:"19 Sep 2026",
+      scores:[["Curriculum conformity",94,80],["Age and reading level",91],["Ghanaian context",93],["Inclusivity and gender sensitivity",92],["Laws and cultural norms",97],["Language accuracy",92],["Assessment alignment",90],["Submission format",91]],cur:94,all:92,
+      fixes:["Money examples now use Ghana cedis and pesewas throughout.","No outstanding issues."]},
+    {id:"b4sci",name:"Basic 4 Science",book:"Learner's book",status:["Below curriculum gate","s-fail"],updated:"18 Sep 2026",
+      scores:[["Curriculum conformity",74,80],["Age and reading level",85],["Ghanaian context",88],["Inclusivity and gender sensitivity",89],["Laws and cultural norms",94],["Language accuracy",88],["Assessment alignment",71],["Submission format",84]],cur:74,all:83,
+      fixes:["Two indicators in the 'Diversity of matter' strand have no activities yet. Suggested activities are ready for review.","Three assessment questions test content not taught in this unit. Replacements are suggested.","This title cannot be exported until curriculum conformity reaches 80%."]},
+    {id:"kg1ll",name:"KG 1 Language and Literacy",book:"Workbook",status:["Submitted, July 2026","s-sub"],updated:"28 Jul 2026",
+      scores:[["Curriculum conformity",92,80],["Age and reading level",93],["Ghanaian context",95],["Inclusivity and gender sensitivity",93],["Laws and cultural norms",98],["Language accuracy",90],["Assessment alignment",88],["Submission format",92]],cur:92,all:92,
+      fixes:["Submitted as version v1.1. The version proof record is locked."]},
+    {id:"b7ss",name:"Basic 7 Social Studies",book:"Learner's book",status:["Draft","s-draft"],updated:"23 Sep 2026",
+      scores:[["Curriculum conformity",81,80],["Age and reading level",86],["Ghanaian context",90],["Inclusivity and gender sensitivity",84],["Laws and cultural norms",93],["Language accuracy",85],["Assessment alignment",79],["Submission format",80]],cur:81,all:84,
+      fixes:["A case study on regional festivals was rebalanced to include festivals from more regions.","Just above the curriculum gate. Two more indicators should be strengthened before review."]}
+  ];
+  let currentTitle="b1eng";
+  $("#tracker").innerHTML=T.map(t=>`<tr><td><a href="#scorecard" data-title="${t.id}" style="color:inherit;font-weight:600">${t.name}</a></td><td>${t.book}</td><td class="score-cell" style="color:${t.cur<80?"var(--fail)":"inherit"}">${t.all}%</td><td><span class="status ${t.status[1]}">${t.status[0]}</span></td><td style="color:var(--muted);white-space:nowrap">${t.updated}</td></tr>`).join("");
+  document.addEventListener("click",e=>{const a=e.target.closest("[data-title]");if(a){currentTitle=a.dataset.title;}});
+
+  $("#title-switch").innerHTML=T.map(t=>`<button class="chip" data-pick="${t.id}" aria-pressed="false">${t.name.replace("Language and Literacy","Literacy").replace(" Language","")}: ${t.book.toLowerCase()}</button>`).join("");
+  $("#title-switch").addEventListener("click",e=>{const b=e.target.closest("[data-pick]");if(b){currentTitle=b.dataset.pick;renderScore(currentTitle)}});
+
+  function setRing(id,val,gate){
+    const c=$(id),t=$(id+"-t"),len=314.16;
+    c.style.stroke=val>=gate?"var(--pass)":"var(--fail)";
+    c.style.strokeDashoffset=len;requestAnimationFrame(()=>requestAnimationFrame(()=>{c.style.strokeDashoffset=len*(1-val/100)}));
+    t.textContent=val+"%";
+  }
+  function renderScore(id){
+    const t=T.find(x=>x.id===id);
+    $$("#title-switch .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.pick===id));
+    setRing("#ring-cur",t.cur,80);setRing("#ring-all",t.all,65);
+    $("#cur-note").innerHTML=t.cur>=80?`NaCCA gate: 80%. <strong style="color:var(--pass)">Passed</strong>`:`NaCCA gate: 80%. <strong style="color:var(--fail)">Below gate</strong>`;
+    $("#all-note").innerHTML=t.all>=65?`NaCCA gate: 65%. <strong style="color:var(--pass)">Passed</strong>`:`NaCCA gate: 65%. <strong style="color:var(--fail)">Below gate</strong>`;
+    $("#criteria").innerHTML=t.scores.map(([n,v,g])=>`<div class="crit"><span>${n}</span><div class="meter"><div class="fill" style="background:${g&&v<g?"var(--fail)":"var(--teal)"}" data-w="${v}"></div>${g?`<span class="gate" style="left:${g}%" title="Gate ${g}%"></span>`:""}</div><span class="num">${v}%</span></div>`).join("");
+    requestAnimationFrame(()=>requestAnimationFrame(()=>$$("#criteria .fill").forEach(f=>f.style.width=f.dataset.w+"%")));
+    $("#fixes").innerHTML=t.fixes.map(f=>`<li>${f}</li>`).join("");
+  }
+
+  // curriculum
+  const S={
+    "Kindergarten":{grades:["KG 1","KG 2"],subjects:["Language and Literacy","Numeracy","Our World Our People","Creative Arts"]},
+    "Lower Primary":{grades:["Basic 1","Basic 2","Basic 3"],subjects:["English Language","Ghanaian Language","Mathematics","Science","History","Religious and Moral Education","Creative Arts","Physical Education"]},
+    "Upper Primary":{grades:["Basic 4","Basic 5","Basic 6"],subjects:["English Language","Ghanaian Language","French","Mathematics","Science","History","Religious and Moral Education","Creative Arts","Physical Education","Computing"]},
+    "Junior High School":{grades:["Basic 7","Basic 8","Basic 9"],subjects:["English Language","Mathematics","Science","Social Studies","Computing","Career Technology","Creative Arts and Design","Religious and Moral Education","Physical Education","Ghanaian Language","French","Arabic"]}
+  };
+  const opt=(a,sel)=>a.map(x=>`<option${x===sel?" selected":""}>${x}</option>`).join("");
+  const sp=$("#sel-phase"),sg=$("#sel-grade"),ss=$("#sel-subject");
+  sp.innerHTML=opt(Object.keys(S),"Lower Primary");
+  function fillPhase(){const p=S[sp.value];sg.innerHTML=opt(p.grades,p.grades[0]);ss.innerHTML=opt(p.subjects,p.subjects[0]);renderTree()}
+  sp.addEventListener("change",fillPhase);sg.addEventListener("change",renderTree);ss.addEventListener("change",renderTree);
+  const tree=[
+    {strand:"Oral language",subs:[["Listening and speaking about our surroundings","Talk about things they see around them using simple words.",true],["Songs, rhymes and poems","Recite simple rhymes about animals and plants.",false]]},
+    {strand:"Reading",subs:[["Phonics: letter sounds","Say the sounds of letters found in nature words, such as m for mango.",false],["Reading comprehension","Answer simple questions about a short picture story.",false]]},
+    {strand:"Grammar",subs:[["Naming words (nouns)","Use naming words for things in their environment.",true]]},
+    {strand:"Writing",subs:[["Writing simple words","Write names of things they see, with support.",false]]}
+  ];
+  function renderTree(){
+    const area=$("#tree-area");
+    if(sg.value==="Basic 1"&&ss.value==="English Language"){
+      area.innerHTML=`<ul class="tree">${tree.map(t=>`<li><details class="strand" open><summary>${t.strand}<span class="count">${t.subs.length} sub-strand${t.subs.length>1?"s":""}</span></summary><div class="strand-body">${t.subs.map(s=>`<div class="substrand"><label><input type="checkbox" ${s[2]?"checked":""}> <span>${s[0]}</span></label><p class="ind">Sample indicator: ${s[1]}</p></div>`).join("")}</div></details></li>`).join("")}</ul>
+      <div class="tree-actions"><span class="sub" style="color:var(--muted);font-size:13px">Structure shown with sample indicators. The full platform loads NaCCA's published standards.</span><button class="btn btn-primary" id="to-studio">Generate lesson from selection</button></div>`;
+      $("#to-studio").addEventListener("click",()=>{location.hash="studio";setTimeout(runGeneration,350)});
+    }else{
+      area.innerHTML=`<div class="empty"><strong>${sg.value} ${ss.value}</strong><br>In the full platform, this subject's NaCCA strands, sub-strands and indicators load here. This preview includes Basic 1 English Language.<br><br><button class="btn btn-ghost" id="load-b1">Open Basic 1 English Language</button></div>`;
+      $("#load-b1").addEventListener("click",()=>{sp.value="Lower Primary";fillPhase()});
+    }
+  }
+  fillPhase();
+
+  // generation
+  let running=false;
+  function runGeneration(){
+    if(running)return;running=true;
+    const btn=$("#generate-btn");btn.disabled=true;btn.textContent="Generating…";
+    $("#book").classList.add("hidden");$("#gen-placeholder").hidden=false;$("#gen-placeholder").textContent="The agents are building Lesson 1…";
+    $("#mini-score").hidden=true;
+    const agents=$$(".agent");agents.forEach(a=>{a.className="agent";a.querySelector(".state").textContent="Waiting"});
+    const msgs=["Matched 2 sub-strands and 2 indicators","Added 9 local examples","Wrote 5 sections at Basic 1 level","Scored 89% overall"];
+    const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;const step=reduce?150:1100;
+    agents.forEach((a,i)=>{
+      setTimeout(()=>{a.classList.add("working");a.querySelector(".state").textContent="Working…"},i*step);
+      setTimeout(()=>{a.classList.remove("working");a.classList.add("done");a.querySelector(".state").textContent=msgs[i]},i*step+step*0.9);
+    });
+    setTimeout(()=>{
+      $("#gen-placeholder").hidden=true;$("#book").classList.remove("hidden");
+      $("#mini-score").hidden=false;let v=0;const target=89;const iv=setInterval(()=>{v+=3;if(v>=target){v=target;clearInterval(iv)}$("#mini-val").textContent=v+"%"},30);
+      btn.disabled=false;btn.textContent="Generate again";running=false;
+      toast("Lesson 1 generated in 4.4 seconds and passed both NaCCA gates.");
+    },4*step+200);
+  }
+  $("#generate-btn").addEventListener("click",runGeneration);
+  $("#lesson-list").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+    if(b.dataset.lesson!=="1"){toast("This preview includes Lesson 1. Other lessons generate the same way.");return}});
+
+  // languages
+  const L={
+    "French":{meta:"Basic 4 French, Lesson 1",status:"Scored 90%, ready for review",html:`<h2>Leçon 1 : Je me présente</h2><p class="sub">Sample lesson opening</p>
+      <p><strong>Bonjour !</strong> Je m'appelle Ama. J'ai neuf ans. J'habite à Kumasi. J'aime lire et jouer au football.</p>
+      <p style="margin-top:10px"><strong>À toi !</strong> Présente-toi à ton camarade :</p>
+      <ul><li>Je m'appelle …</li><li>J'ai … ans.</li><li>J'habite à …</li></ul>`},
+    "Asante Twi":{meta:"Basic 1 Ghanaian Language (Asante Twi), Lesson 1",review:true,html:`<h2>Greetings</h2><p class="sub">Sample opening line</p><p style="font-size:20px;margin:8px 0">Maakye! Ɛte sɛn?</p><p class="sub">Full lesson drafted by the platform and sent to Cosmos's Asante Twi reviewer. It is shown here only after approval.</p>`},
+    "Ewe":{meta:"Basic 1 Ghanaian Language (Ewe), Lesson 1",review:true,html:`<h2>Draft waiting for review</h2><p class="sub">Ewe drafts are released only after Cosmos's native-speaker reviewer approves them. The keyboard includes ɖ, ƒ, ŋ, ɔ, ɛ and ʋ for Ewe.</p>`},
+    "Ga":{meta:"Basic 1 Ghanaian Language (Ga), Lesson 1",review:true,html:`<h2>Draft waiting for review</h2><p class="sub">Ga drafts are released only after Cosmos's native-speaker reviewer approves them.</p>`},
+    "Arabic":{meta:"Basic 7 Arabic, Lesson 1",review:true,html:`<h2>Right-to-left layout</h2><p class="sub">Arabic lessons are laid out right to left in the editor and in every export, and are reviewed before release.</p><p class="rtl" style="font-size:22px;margin-top:10px">مرحبًا</p>`}
+  };
+  const lt=$("#lang-tabs");lt.innerHTML=Object.keys(L).map((k,i)=>`<button class="chip" data-lang="${k}" aria-pressed="${i===0}">${k}</button>`).join("");
+  function showLang(k){const d=L[k];$$("#lang-tabs .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===k));
+    $("#lang-panel").innerHTML=`<p class="sub" style="margin-bottom:8px">${d.meta}</p>${d.review?`<span class="review-flag">Waiting for native-speaker review</span>`:`<span class="status s-pass">${d.status}</span>`}<div style="margin-top:14px">${d.html}</div>`}
+  lt.addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(b)showLang(b.dataset.lang)});showLang("French");
+  const keys=["ɛ","Ɛ","ɔ","Ɔ","ŋ","Ŋ","ɖ","Ɖ","ƒ","Ƒ","ʋ","Ʋ","ɣ","Ɣ"];
+  $("#kbd").innerHTML=keys.map(k=>`<button type="button" aria-label="Insert ${k}">${k}</button>`).join("");
+  $("#kbd").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const ta=$("#kbd-area");const s=ta.selectionStart??ta.value.length;ta.value=ta.value.slice(0,s)+b.textContent+ta.value.slice(ta.selectionEnd??s);ta.focus();ta.selectionStart=ta.selectionEnd=s+1});
+
+  // anonymous export
+  $("#anon-toggle").addEventListener("change",e=>{const on=e.target.checked;$("#cover").classList.toggle("anon",on);
+    $("#cover-pub").textContent=on?"Assessor copy":"Cosmos Publishers";$("#cover-code").textContent=on?"Reference SCA-B1-ENG-LB, no publisher details":"Learner's book";
+    toast(on?"Publisher branding removed from all pages.":"Publisher branding restored.")});
+
+
+  // uploads
+  const fileList=[
+    {name:"NaCCA Book Submission Guidelines.pdf",size:1843200,cat:"NaCCA guidelines",done:true,when:"Uploaded 20 Sep 2026"},
+    {name:"Basic 1 English pupil book (submitted draft).docx",size:4512000,cat:"Manuscript",done:true,when:"Uploaded 20 Sep 2026"},
+    {name:"Cosmos Publishers logo.svg",size:48200,cat:"Brand asset",done:true,when:"Uploaded 21 Sep 2026"}
+  ];
+  const cats=["NaCCA guidelines","Manuscript","Brand asset","Illustration","Data or spreadsheet","Other"];
+  const kind=n=>{const e=n.split(".").pop().toLowerCase();if(e==="pdf")return["pdf","PDF"];if(["doc","docx","txt"].includes(e))return["doc","DOC"];if(["png","jpg","jpeg","svg"].includes(e))return["img","IMG"];if(["xls","xlsx","csv"].includes(e))return["sheet","XLS"];return["","FILE"]};
+  const guess=n=>{const k=kind(n)[0];if(/nacca|guideline|mark ?sheet|curriculum/i.test(n))return"NaCCA guidelines";if(k==="doc")return"Manuscript";if(k==="img")return /logo|brand/i.test(n)?"Brand asset":"Illustration";if(k==="sheet")return"Data or spreadsheet";if(k==="pdf")return"Manuscript";return"Other"};
+  const fmt=b=>b>1048576?(b/1048576).toFixed(1)+" MB":Math.max(1,Math.round(b/1024))+" KB";
+  const esc=t=>t.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  function renderFiles(){
+    $("#file-count").textContent=fileList.length+(fileList.length===1?" file":" files");
+    $("#file-list").innerHTML=fileList.length?fileList.map((f,i)=>{const [k,l]=kind(f.name);return `<div class="file-row"><div class="ficon ${k}">${l}</div><div><div class="fname">${esc(f.name)}</div><div class="fmeta">${fmt(f.size)}, ${f.done?f.when:"Uploading…"}</div></div><select data-i="${i}" aria-label="File type for ${esc(f.name)}">${cats.map(c=>`<option${c===f.cat?" selected":""}>${c}</option>`).join("")}</select><div>${f.done?`<span class="status s-pass">Ready</span>`:`<div class="prog"><div id="prog-${i}"></div></div>`}</div><button class="rm" data-rm="${i}" aria-label="Remove ${esc(f.name)}">×</button></div>`}).join(""):`<div class="empty">No files yet. Upload NaCCA guidelines or a manuscript to get started.</div>`;
+  }
+  function addFiles(files){
+    [...files].forEach(file=>{
+      if(file.size>52428800){toast(`${file.name} is larger than 50 MB and was not added.`);return}
+      const f={name:file.name,size:file.size,cat:guess(file.name),done:false};fileList.unshift(f);
+    });
+    renderFiles();
+    fileList.forEach((f,i)=>{if(f.done)return;let w=0;const iv=setInterval(()=>{w+=20;const el=$("#prog-"+i);if(el)el.style.width=w+"%";if(w>=100){clearInterval(iv);f.done=true;f.when="Uploaded just now";renderFiles();toast(`${f.name} added to the library as ${f.cat.toLowerCase()}.`)}},180)});
+  }
+  const dz=$("#dropzone"),fi=$("#file-input");
+  $("#browse-btn").addEventListener("click",e=>{e.stopPropagation();fi.click()});
+  dz.addEventListener("click",()=>fi.click());
+  dz.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fi.click()}});
+  fi.addEventListener("change",()=>{addFiles(fi.files);fi.value=""});
+  ["dragenter","dragover"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add("over")}));
+  ["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("over")}));
+  dz.addEventListener("drop",e=>addFiles(e.dataTransfer.files));
+  $("#file-list").addEventListener("click",e=>{const b=e.target.closest("[data-rm]");if(!b)return;const f=fileList.splice(+b.dataset.rm,1)[0];renderFiles();toast(`${f.name} removed.`)});
+  $("#file-list").addEventListener("change",e=>{const sel=e.target.closest("select[data-i]");if(!sel)return;fileList[+sel.dataset.i].cat=sel.value;toast(`File type changed to ${sel.value.toLowerCase()}.`)});
+  renderFiles();
+
+  // team
+  const roles={"Administrator":[1,1,1,1,1],"Editor":[1,1,0,0,0],"Curriculum reviewer":[0,1,1,0,0],"Design reviewer":[0,1,1,1,0],"Language reviewer":[0,1,1,0,0],"Viewer":[0,0,0,0,0]};
+  $("#u-role").innerHTML=Object.keys(roles).map(r=>`<option${r==="Editor"?" selected":""}>${r}</option>`).join("");
+  $("#perm-body").innerHTML=Object.entries(roles).map(([r,p])=>`<tr><td><strong>${r}</strong></td>${p.map(v=>`<td class="${v?"yes":"no"}">${v?"Yes":"No"}</td>`).join("")}</tr>`).join("");
+  const team=[
+    {name:"Peter Eselecha",email:"peter@cosmospublishers.com",role:"Administrator",status:"Active"},
+    {name:"Curriculum lead",email:"curriculum@cosmospublishers.com",role:"Curriculum reviewer",status:"Active"},
+    {name:"Design lead",email:"design@cosmospublishers.com",role:"Design reviewer",status:"Active"},
+    {name:"Asante Twi reviewer",email:"twi.review@cosmospublishers.com",role:"Language reviewer",lang:"Asante Twi",status:"Invited"}
+  ];
+  const initials=n=>n.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();
+  const hue=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))%360;return h};
+  function renderTeam(){
+    $("#team-count").textContent=`${team.length} people, ${team.filter(t=>t.status==="Invited").length} invitation${team.filter(t=>t.status==="Invited").length===1?"":"s"} pending`;
+    $("#team-body").innerHTML=team.map((t,i)=>`<tr><td><div class="who"><span class="avatar" style="background:hsl(${hue(t.name)} 40% 42%)">${esc(initials(t.name))}</span><div>${esc(t.name)}<small>${esc(t.email)}</small></div></div></td>
+      <td><select data-role="${i}" aria-label="Role for ${esc(t.name)}" ${i===0?"disabled":""}>${Object.keys(roles).map(r=>`<option${r===t.role?" selected":""}>${r}</option>`).join("")}</select>${t.lang?`<small style="display:block;color:var(--muted);font-size:12px;margin-top:3px">${t.lang}</small>`:""}</td>
+      <td><span class="status ${t.status==="Active"?"s-pass":"s-warn"}">${t.status}</span></td>
+      <td>${i===0?"":`<button class="rm" data-remove="${i}" aria-label="Remove ${esc(t.name)}">×</button>`}</td></tr>`).join("");
+  }
+  $("#team-count");renderTeam();
+  $("#u-role").addEventListener("change",e=>{$("#lang-wrap").hidden=e.target.value!=="Language reviewer"});
+  $("#invite-form").addEventListener("submit",e=>{
+    e.preventDefault();const name=$("#u-name").value.trim(),email=$("#u-email").value.trim(),role=$("#u-role").value;const err=$("#form-error");
+    if(!name){err.textContent="Enter the person's full name.";$("#u-name").focus();return}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent="Enter a valid email address, such as name@cosmospublishers.com.";$("#u-email").focus();return}
+    if(team.some(t=>t.email.toLowerCase()===email.toLowerCase())){err.textContent="This person is already on the team.";return}
+    err.textContent="";team.push({name,email,role,status:"Invited",lang:role==="Language reviewer"?$("#u-lang").value:undefined});
+    renderTeam();e.target.reset();$("#u-role").value="Editor";$("#lang-wrap").hidden=true;
+    toast(`Invitation sent to ${name}. In this preview, no email is actually sent.`);
+  });
+  $("#team-body").addEventListener("change",e=>{const sel=e.target.closest("[data-role]");if(!sel)return;const t=team[+sel.dataset.role];t.role=sel.value;if(sel.value!=="Language reviewer")delete t.lang;renderTeam();toast(`${t.name} is now a ${sel.value.toLowerCase()}.`)});
+  $("#team-body").addEventListener("click",e=>{const b=e.target.closest("[data-remove]");if(!b)return;const t=team.splice(+b.dataset.remove,1)[0];renderTeam();toast(`${t.name} removed from the team.`)});
+
+  show(location.hash.slice(1)||"dashboard");
+})();
+</script>
+</body>
+</html>

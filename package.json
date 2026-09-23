@@ -1,0 +1,10 @@
+{
+  "name": "syllabus-core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Syllabus Core Architect static preview and curriculum workspace",
+  "scripts": {
+    "dev": "npx --yes serve .",
+    "preview": "npx --yes serve ."
+  }
+}
